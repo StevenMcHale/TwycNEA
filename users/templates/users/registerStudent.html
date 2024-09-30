@@ -1,0 +1,32 @@
+{% extends 'main/main.html' %}
+
+{% block content %}
+
+{% load crispy_forms_tags %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body" style="height: 600px; overflow-y: auto;">
+
+            <h3>Register Student</h3>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{form|crispy}}
+
+                <br> 
+                <input class="btn btn-sm btn-success" type="submit" name="Create User Student">
+            </form>
+
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+
+            {{form.errors}}
+        </div>
+    </div>
+</div>
+
+{% endblock %}
