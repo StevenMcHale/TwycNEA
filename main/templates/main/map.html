@@ -1,0 +1,10 @@
+{% extends 'main/main.html' %}
+{% load static %}
+
+{% block content %}
+
+
+<marquee behavior="alternate" direction=right scrollamount=50> <img src="{% static 'images/map.png' %}" alt="Map 1"> </marquee>
+<marquee behavior="alternate" scrollamount=20> <img src="{% static 'images/realMap.png' %}" alt="Map 2"> </marquee>
+
+{% endblock %}

@@ -1,0 +1,394 @@
+{% extends 'main/main.html' %}
+{% load static %}
+
+{% block content %}
+
+<style type="text/css">
+    .sidenav {
+        height:100%;
+        width:140px;
+        position: fixed;
+        z-index:1;
+        top:0;
+        Left:0;
+        background-color:#002A5A;
+        overflow-x: :hidden;
+        padding-top:70px;
+    }
+
+
+    .sidenav a {
+        padding:6px 8px 6px 16px;
+        text-decoration: none;
+        font-size:17px;
+        color: #ffcc00;
+        display:block;
+    }
+
+
+    #lvi-students,
+    #uvi-students,
+    #teachers,
+    #timeslots,
+    #dates,
+    #buildings,
+    #rooms,
+    #subjects,
+    #parents {
+        display: none;
+    }
+
+    body:not(:has(:target)) #lvi-students {
+        display: block;
+    }
+
+    #lvi-students:target,
+    #uvi-students:target,
+    #teachers:target,
+    #timeslots:target,
+    #dates:target,
+    #buildings:target,
+    #rooms:target,
+    #subjects:target,
+    #parents:target {
+        display: block;
+    }
+
+    .row {
+        padding-left:500px;
+    }
+
+
+</style>
+
+
+
+<div class="sidenav">
+    <a href="#lvi-students">LVI Students</a>
+    <a href="#uvi-students">UVI Students</a>
+    <a href="#teachers">Teachers</a>
+    <a href="#timeslots">Timeslots</a>
+    <a href="#dates">Dates</a>
+    <a href="#buildings">Buildings</a>
+    <a href="#rooms">Rooms</a>
+    <a href="#subjects">Subjects</a>
+    <a href="#parents">Parents</a>
+</div>
+
+
+
+
+<div id="lvi-students" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>LVI STUDENTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'registerStudent' %}">Create Student</a>
+
+            <a class="btn btn-primary btn-sm btn-success" href="{% url 'convert_all_lvi' %}" style="margin-top: 10px;">Convert All LVI Students</a>
+            <table class="table table-sm">
+                <tr>
+                    
+                    <th>Student Name</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for student in lvi_students %}
+
+                    <tr>
+                        
+                        <td>{{student.name}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'student' student.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_student' student.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_student' student.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="uvi-students" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>UVI STUDENTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'registerStudent' %}">Create Student</a>
+
+            <a class="btn btn-primary btn-sm btn-danger" href="{% url 'delete_all_uvi' %}" style="margin-top: 10px;">Delete All UVI Students</a>
+            <table class="table table-sm">
+                <tr>
+                    
+                    <th>Student Name</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for student in uvi_students %}
+                    <tr>
+                        
+                        <td>{{student.name}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'student' student.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_student' student.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_student' student.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div id="teachers" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>TEACHERS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'registerTeacher' %}">Create Teacher</a>
+            <table class="table table-sm">
+                <tr>
+                    
+                    <th>Teacher Name</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for teacher in teachers %}
+                    <tr>
+                        
+                        <td>{{teacher.name}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'teacher' teacher.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_teacher' teacher.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_teacher' teacher.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="timeslots" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>TIMESLOTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_timeslot' %}">Create Timeslot</a>
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Start Time</th>
+                    <th>End Time</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for timeslot in timeslots %}
+                    <tr>
+                        <td>{{timeslot.start_time|time:"H:i"}}</td>
+                        <td>{{timeslot.end_time|time:"H:i"}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'timeslot' timeslot.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_timeslot' timeslot.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_timeslot' timeslot.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="dates" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>EVENING DATES:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_eveningDate' %}">Create Date</a>
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Date</th>
+                    <th>Year Group</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for date in dates %}
+                    <tr>
+                        <td>{{date.date}}</td>
+                        <td>{{date.year_group}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'date' date.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_eveningDate' date.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_eveningDate' date.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="buildings" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>BUILDINGS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_building' %}">Create Building</a>
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Building Name</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for building in buildings %}
+                    <tr>
+                        <td>{{building.name}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'building' building.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_building' building.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_building' building.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="rooms" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>ROOMS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_room' %}">Create Room</a>
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Room Name</th>
+                    <th>Building</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for room in rooms %}
+                    <tr>
+                        <td>{{room.name}}</td>
+                        <td>{{room.building}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'room' room.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_room' room.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_room' room.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="subjects" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>SUBJECTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'create_subject' %}">Create Subject</a>
+
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Subject Name</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for subject in subjects %}
+                    <tr>
+                        <td>{{subject.name}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'subject' subject.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_subject' subject.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_subject' subject.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+                    
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="parents" class="row">
+    <br>
+    <div class="col-md-7">
+        <h5>PARENTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 500px; overflow-y: auto;">
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'registerParent' %}">Create Parent</a>
+
+            <table class="table table-sm">
+                <tr>
+                    
+                    <th>Parent Name</th>
+                    <th>View</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+
+                {% for parent in parents %}
+                    <tr>
+                        
+                        <td>{{parent.name}}</td>
+                        <td><a class="btn btn-sm btn-info" href="{% url 'parent' parent.id %}">View</a></td>
+                        <td><a class="btn btn-sm btn-success" href="{% url 'edit_parent' parent.id %}">Edit</a></td>
+                        <td><a class="btn btn-sm btn-danger" href="{% url 'delete_parent' parent.id %}">Delete</a></td>
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

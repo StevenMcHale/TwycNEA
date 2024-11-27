@@ -1,0 +1,43 @@
+{% extends 'main/main.html' %}
+{% load static %}
+{% block content %}
+<br>
+<div class="row">
+    <div class="col-md-3">
+        <div class="card card-body">
+
+            <h3>Timeslot Selection</h3>
+            <br>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                
+                <h5>Start Time:</h5>
+                <select id="start_time" name="start_time" class="form-control">
+                    {% for timeslot in timeslots %}
+                        <option name="start_time" value="{{ timeslot }}">{{timeslot.start_time|time:"H:i"}}</option>
+                    {% endfor %}
+                </select>
+
+                <br>
+                
+                <h5>End Time:</h5>
+                <select id="end_time" name="end_time" class="form-control">
+                    {% for timeslot in timeslots %}
+                        <option name="end_time" value="{{ timeslot }}">{{timeslot.end_time|time:"H:i"}}</option>
+                    {% endfor %}
+                </select>
+
+                <br>
+
+                <input class="btn btn-sm btn-success" type="submit" name="Submit">
+            </form>
+
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

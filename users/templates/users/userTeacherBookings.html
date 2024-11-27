@@ -1,0 +1,46 @@
+{% extends 'main/main.html' %}
+{% block content %}
+
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Bookings</h5>
+		</div>
+		<div class="card card-body" style="height: 500px; overflow-y: auto;">
+			<table class="table table-sm">
+				<tr>
+					<th>Start Time</th>
+					<th>Student</th>
+					<th>Subject</th>
+					<th>Date</th>
+					<th>Status</th>
+					<th>Edit</th>
+				</tr>
+
+				{% for booking in bookings %}
+					<tr>
+						<td>{{booking.timeslot.start_time|time:"H:i"}}</td>
+						<td>{{booking.student}}</td>
+						<td>
+							{% for subject in booking.teacher.subjects.all %}
+							{% if subject in booking.student.subjects.all %}
+								{{ subject.name }}{% if not forloop.last %} {% endif %}
+							{% endif %}
+							{% endfor%}
+						</td>
+						<td>{{booking.date.date}}</td>
+						<td>{{booking.status}}</td>
+						<td><a class="btn btn-sm btn-success" href="{% url 'edit_booking' booking.booking_id %}">Edit</a></td>
+					</tr>
+
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,54 @@
+{% extends 'main/main.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<h5>PARENT INFO:</h5>
+        <hr>
+		<div class="card card-body">
+			<h5>Student: {{parent.name}}</h5>
+			<hr>
+			<p>Email: {{parent.email}}</p>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<h5>STUDENTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 300px; overflow-y: auto;">
+
+            <form method="POST" action="">
+
+                {% csrf_token %}
+
+                <select id="student" name="student" class="form-control">
+                    {% for student in students %}
+                        <option name="student" value="{{ student.name }}">{{student.name}}</option>
+                    {% endfor %}
+                </select>
+
+                <br>
+
+                <input type="password" name="password" placeholder="Password..." class="form-control my-2" style="width: 100%;">
+            
+                <br>
+                <input class="btn btn-sm btn-success" type="submit" name="Submit">
+
+                    
+
+            </form>
+
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+        </div>
+		
+	</div>
+
+</div>
+
+
+{% endblock %}

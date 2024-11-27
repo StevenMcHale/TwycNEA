@@ -1,0 +1,73 @@
+{% extends 'main/main.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-3">
+		<div class="card card-body">
+
+            <h3>Create Booking</h3>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                {{form|crispy}}
+
+
+                <br> 
+                <input class="btn btn-sm btn-success" type="submit" name="Submit">
+            </form>
+
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+
+            {{form.errors}}
+        </div>
+    </div>
+
+    <div class="col-md-7">
+		<div class="card card-body" style="width: 1000px; height: 300px; overflow-y: auto; overflow-x: auto;">
+            <table class="table table-sm">
+                <tr>
+                    
+                    <th>Teacher</th>
+                    <th>Room</th>
+                    <th>Building</th>
+                    <th>|</th>
+                    {% for timeslot in timeslots %}
+                        <th>{{ timeslot.start_time|time:"H:i" }}</th>
+                    {% endfor %}
+                </tr>
+
+                {% for teacher in teachersAv %}
+
+                    <tr>
+
+                        
+                        {% for item in teacher %}
+                            {% if item == 0 %}
+                                <td style="color: green;">Available</td>
+                            {% elif item == 1 %}
+                                <td style="color: red;">Unavailable</td>
+                            {% else %}
+                                <td>{{item}}</td>
+
+
+                            {% endif %}
+
+                        {% endfor %}
+
+                    </tr>
+
+                {% endfor %}
+            
+            </table>
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

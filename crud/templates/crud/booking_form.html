@@ -1,0 +1,32 @@
+{% extends 'main/main.html' %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card card-body">
+
+            <h3>Create Booking</h3>
+
+            <form action="" method="POST">
+                {% csrf_token %}
+                {{form|crispy}}
+
+                <a class="btn btn-danger" href="{% url 'bookings' %}">Cancel</a>
+                
+                <input class="btn btn-success" type="submit" name="Submit">
+            </form>
+
+            {% for message in messages %}
+                <p>{{message}}</p>
+            {% endfor %}
+
+            {{form.errors}}
+
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

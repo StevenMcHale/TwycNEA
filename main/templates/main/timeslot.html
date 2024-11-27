@@ -1,0 +1,44 @@
+{% extends 'main/main.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<h5>TIMESLOT INFO:</h5>
+        <hr>
+		<div class="card card-body">
+			<h5>Start Time: {{timeslot.start_time|time:"H:i"}}</h5>
+            <h5>End Time: {{timeslot.end_time|time:"H:i"}}</h5>
+
+		</div>
+	</div>
+
+    <div class="col-md">
+		<h5>DATES:</h5>
+        <hr>
+        <div class="card card-body" style="height: 300px; overflow-y: auto;">
+
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Date</th>
+
+                </tr>
+
+                {% for date in dates %}
+                    <tr>
+                        <td>{{date.date}}</td>
+
+                    </tr>
+
+                {% endfor %}
+                    
+            </table>
+        </div>
+		
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,120 @@
+{% extends 'main/main.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<h5>STUDENT INFO:</h5>
+        <hr>
+		<div class="card card-body">
+			<h5>Student: {{student.name}}</h5>
+			<hr>
+			<p>Email: {{student.email}}</p>
+			<p>Year Group: {{student.year_group}}</p>
+			<p>Total Bookings: {{total_bookings}}</p>
+
+		</div>
+	</div>
+
+	<div class="col-md">
+		<h5>SUBJECTS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 300px; overflow-y: auto;">
+
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Subject Name</th>
+
+                </tr>
+
+                {% for subject in subjects %}
+                    <tr>
+                        <td>{{subject.name}}</td>
+
+                    </tr>
+
+                {% endfor %}
+                    
+            </table>
+        </div>
+		
+	</div>
+
+	<div class="col-md">
+		<h5>TEACHERS:</h5>
+        <hr>
+        <div class="card card-body" style="height: 300px; overflow-y: auto;">
+
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Teacher Name</th>
+
+                </tr>
+
+                {% for teacher in teachers %}
+                    <tr>
+                        <td>{{teacher.name}}</td>
+
+                    </tr>
+
+                {% endfor %}
+                    
+            </table>
+        </div>
+
+		
+	</div>
+</div>
+
+
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<div class="card card-body">
+			<h5>Bookings</h5>
+		</div>
+		<div class="card card-body" style="height: 300px; overflow-y: auto;">
+			<table class="table table-sm">
+				<tr>
+					<th>Teacher</th>
+					<th>Subject</th>
+					<th>Start Time</th>
+					<th>Date</th>
+					<th>Building</th>
+					<th>Room</th>
+					<th>Status</th>
+					<th>Date Created</th>
+				</tr>
+
+				{% for booking in bookings %}
+					<tr>
+						<td>{{booking.teacher}}</td>
+						<td>
+							{% for subject in booking.teacher.subjects.all %}
+							{% if subject in booking.student.subjects.all %}
+								{{ subject.name }}{% if not forloop.last %} {% endif %}
+							{% endif %}
+							{% endfor%}
+						</td>
+						<td>{{booking.timeslot.start_time|time:"H:i"}}</td>
+						<td>{{booking.date.date}}</td>
+						<td>{{booking.teacher.building}}</td>
+						<td>{{booking.teacher.room}}</td>
+						<td>{{booking.status}}</td>
+						<td>{{booking.date_created}}</td>
+					</tr>
+
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'main/main.html' %}
+
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md">
+		<h5>ROOM INFO:</h5>
+        <hr>
+		<div class="card card-body">
+			<h5>Room: {{room.name}}</h5>
+			<hr>
+			<p>Building: {{room.building}}</p>
+
+		</div>
+	</div>
+
+    <div class="col-md">
+		<h5>TEACHERS IN ROOM:</h5>
+        <hr>
+        <div class="card card-body" style="height: 300px; overflow-y: auto;">
+
+            <table class="table table-sm">
+                <tr>
+
+                    <th>Teacher Name</th>
+
+                </tr>
+
+                {% for teacher in teachers %}
+                    <tr>
+                        <td>{{teacher.name}}</td>
+
+                    </tr>
+
+                {% endfor %}
+                    
+            </table>
+        </div>
+		
+	</div>
+</div>
+
+{% endblock %}
