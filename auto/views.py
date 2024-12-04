@@ -18,7 +18,7 @@ import time
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['student'])
-@valid_date
+#@valid_date
 def automatic(request):
 
     student = request.user.student
