@@ -11,7 +11,6 @@ from .map import twyc_map
 from users.decorators import *
 from users.decorators import unauthenticated_user, allowed_users
 from django.contrib.auth.decorators import login_required
-import time
 
 
 # Create your views here.
@@ -27,7 +26,6 @@ def automatic(request):
     timeslots = sortTimeslots(timeslots)
 
     if request.method == 'POST':
-        start = time.time()
         start_time = request.POST.get('start_time')
         end_time = request.POST.get('end_time')
 
@@ -300,8 +298,6 @@ def automatic(request):
                     newTimeslotPatterns.append(timeslotPatterns[index])
 
 
-                print(newTimeslotPatterns)
-
                 solutionQueue = DynamicQueue()
 
 
@@ -510,7 +506,6 @@ def automatic(request):
                                 )
 
                     
-                    print(time.time()-start)
                     return redirect('userStudentBookings')
                 
                 else:

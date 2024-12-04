@@ -32,7 +32,7 @@ def teacherBacktracking(pAv, pTimeslots):
 
 def backtrack(sol, n, ans, av, pTimeslots):
 
-    if len(ans) >= 10:  # Check if we have enough results
+    if len(ans) >= 8:  # Check if we have enough results
         return
     
     
