@@ -272,10 +272,6 @@ def automatic(request):
 
 
 
-
-
-
-
             elif teachersLeft < len(userTimeslots):
 
                 # Get all timeslot patterns
