@@ -80,7 +80,7 @@ def automatic(request):
                 # Backtrack once to get possible solutions
 
                 result = teacherBacktracking(teachersAv, userTimeslots)
-                # print(userTimeslots)
+
 
                 # Add those solutions to a queue
 
@@ -114,7 +114,6 @@ def automatic(request):
                     if solutionQueue.isFull():
                         break
                 
-                # solutionQueue.showQueue()
 
                 if solutionQueue.getQueueLength() != 0:
 
@@ -148,7 +147,6 @@ def automatic(request):
                             else:
                                 endFound = True
 
-                        # print(currentDict)
 
                         # Calculate Breaks and Distance                           
 
@@ -168,7 +166,6 @@ def automatic(request):
 
                         # Put through graph
                         
-                        # print(teachersOrder)
 
                         count = 0
 
@@ -192,8 +189,7 @@ def automatic(request):
                         currentDict['Distance'] = distance
 
                         finalSolutions.append(currentDict)
-                    
-                    #print(finalSolutions)
+
 
                     # Sort solutions on breaks or distance
 
@@ -233,8 +229,7 @@ def automatic(request):
 
                     else:
                         optimalBreakSolution = solutionStack.pop()
-                                    
-                    # print(optimalBreakSolution)
+
 
                     # Remove curremt bookings and empty bookings
 
@@ -247,7 +242,6 @@ def automatic(request):
                             if optimalBreakSolution[timeslot] == 0:
                                 del optimalBreakSolution[timeslot]
                     
-                    # print(optimalBreakSolution)
 
                     # Book appointments
 
@@ -349,8 +343,7 @@ def automatic(request):
                             break
 
 
-                    
-                #solutionQueue.showQueue()
+                
 
                 if solutionQueue.getQueueLength() != 0:
 
@@ -386,8 +379,6 @@ def automatic(request):
                             else:
                                 endFound = True
 
-                        # print(currentDict)
-
 
                         # Calculate breaks and distance                           
 
@@ -406,7 +397,6 @@ def automatic(request):
 
                         # Put through graph 
                         
-                        # print(teachersOrder)
 
                         count = 0
 
@@ -433,14 +423,10 @@ def automatic(request):
 
 
 
-
                     # Sort solutions on breaks or distance
                     
 
                     finalSolutions = bubbleSortBreaks(finalSolutions)
-                    #print(finalSolutions)
-
-                    #print(finalSolutions)
 
 
                     # Put solutions in a stack
@@ -474,9 +460,6 @@ def automatic(request):
                     else:
                         optimalBreakSolution = solutionStack.pop()
 
-                    #print(optimalSolutions)
-
-                    #print(optimalBreakSolution)
 
 
 
@@ -489,8 +472,7 @@ def automatic(request):
                         if timeslot in optimalBreakSolution.keys():
                             if optimalBreakSolution[timeslot] == 0:
                                 del optimalBreakSolution[timeslot]
-                    
-                    #print(optimalBreakSolution)
+
 
                     # Book appointments
 
