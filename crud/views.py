@@ -4,8 +4,52 @@ from main.models import *
 from django.contrib.auth.decorators import login_required
 from users.decorators import unauthenticated_user, allowed_users
 from django.contrib import messages
+from django.contrib.auth.models import User
+
 
 # Create your views here.
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def changeTeacherPass(request, pk):
+
+
+    if request.method == 'POST':
+        newPassword = request.POST.get('password')
+
+        uname = Teacher.objects.get(id=pk).user.username
+
+        user = User.objects.get(username=uname)
+        user.set_password(newPassword)
+        user.save()
+        return redirect('dashboard')
+
+    context = {}
+    return render(request, 'crud/changePass.html', context)
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def changeStudentPass(request, pk):
+
+
+    if request.method == 'POST':
+        newPassword = request.POST.get('password')
+
+        uname = Student.objects.get(id=pk).user.username
+
+        user = User.objects.get(username=uname)
+        user.set_password(newPassword)
+        user.save()
+        return redirect('dashboard')
+
+    context = {}
+    return render(request, 'crud/changePass.html', context)
+
+
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])

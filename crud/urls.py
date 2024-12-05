@@ -2,6 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+
+    path('change_pass_t/<str:pk>/', views.changeTeacherPass, name="change_pass_t"),
+    path('change_pass_s/<str:pk>/', views.changeStudentPass, name="change_pass_s"),
+
     path('delete_all_uvi/', views.deleteAll, name="delete_all_uvi"),
     path('convert_all_lvi/', views.convertAll, name="convert_all_lvi"),
 
