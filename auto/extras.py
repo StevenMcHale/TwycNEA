@@ -1,7 +1,7 @@
 class DynamicQueue(object):
     def __init__(self):
         self.__items = []
-        self.__max = 40
+        self.__max = 60
 
     def enQueue(self, item):
         self.__items.append(item)
