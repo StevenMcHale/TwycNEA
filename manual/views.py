@@ -8,7 +8,6 @@ from .mergeSort import *
 from .extras import *
 from users.decorators import *
 import time
-from django.http import HttpResponse
 
 # Create your views here.
 
@@ -33,11 +32,6 @@ def manualType(request):
 
 
     if request.method == 'POST':
-
-        if 'last_submit' in request.session and (time.time() - request.session['last_submit']) < 0.000001:  # 1-second threshold
-            messages.info(request, 'Please wait....')
-
-        request.session['last_submit'] = time.time()
 
 
         form = ManualBookingForm(request.POST)
