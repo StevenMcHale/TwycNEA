@@ -78,6 +78,10 @@ def manualType(request):
                 form.fields['teacher'].queryset = student.teachers.all()
                 form.fields['timeslot'].queryset = sortedTimeslots
     
+    else:
+        # Create a new empty form instance if it's not a POST request
+        form = ManualBookingForm()
+    
 
     button_disabled = request.session.get('button_disabled', False)
 
