@@ -36,6 +36,8 @@ def manualType(request):
 
         if form.is_valid():
 
+            request.session['button_disabled'] = True
+
             teacher = form.cleaned_data.get('teacher')
             timeslot = form.cleaned_data.get('timeslot')
 
@@ -56,7 +58,7 @@ def manualType(request):
                         # Save the booking
                         booking.save()
 
-                        request.session['button_disabled'] = True
+                        
 
                         return redirect('userStudentBookings')
                     
@@ -78,7 +80,7 @@ def manualType(request):
     
 
     button_disabled = request.session.get('button_disabled', False)
-    
+
     finalTimeslots = sortTimeslots(timeslots)
 
     teachersAv = teachersAvailability(teachers, finalTimeslots, date, student)
