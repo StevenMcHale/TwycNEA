@@ -17,7 +17,7 @@
 
 
                 <br> 
-                <input class="btn btn-sm btn-success" type="submit" name="Submit" disabled>
+                <input class="btn btn-sm btn-success" type="submit" name="Submit" {% if button_disabled %}disabled{% endif %}>
             </form>
 
             {% for message in messages %}

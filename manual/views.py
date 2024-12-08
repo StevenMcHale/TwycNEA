@@ -87,7 +87,7 @@ def manualType(request):
 
     
 
-    context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv}
+    context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv, 'button_diabled':button_disabled}
     return render(request, 'manual/manual.html', context)
 
 
