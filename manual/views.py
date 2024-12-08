@@ -55,6 +55,9 @@ def manualType(request):
 
                         # Save the booking
                         booking.save()
+
+                        request.session['button_disabled'] = True
+
                         return redirect('userStudentBookings')
                     
                     else:
@@ -74,6 +77,7 @@ def manualType(request):
                 form.fields['timeslot'].queryset = sortedTimeslots
     
 
+    button_disabled = request.session.get('button_disabled', False)
     
     finalTimeslots = sortTimeslots(timeslots)
 
