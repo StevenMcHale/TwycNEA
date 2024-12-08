@@ -36,7 +36,6 @@ def manualType(request):
 
         if form.is_valid():
 
-            request.session['button_disabled'] = True
 
             teacher = form.cleaned_data.get('teacher')
             timeslot = form.cleaned_data.get('timeslot')
@@ -78,12 +77,8 @@ def manualType(request):
                 form.fields['teacher'].queryset = student.teachers.all()
                 form.fields['timeslot'].queryset = sortedTimeslots
     
-    else:
-        # Create a new empty form instance if it's not a POST request
-        form = ManualBookingForm()
-    
 
-    button_disabled = request.session.get('button_disabled', False)
+    
 
     finalTimeslots = sortTimeslots(timeslots)
 
@@ -91,7 +86,7 @@ def manualType(request):
 
     
 
-    context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv, 'button_disabled':button_disabled}
+    context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv}
     return render(request, 'manual/manual.html', context)
 
 
