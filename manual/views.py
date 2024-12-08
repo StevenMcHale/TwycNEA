@@ -8,8 +8,12 @@ from .mergeSort import *
 from .extras import *
 from users.decorators import *
 import time
+from threading import Lock
+from django.http import HttpResponse
 
 # Create your views here.
+
+lock = Lock()
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['student'])
@@ -32,50 +36,56 @@ def manualType(request):
 
 
     if request.method == 'POST':
-        form = ManualBookingForm(request.POST)
 
-        if form.is_valid():
+        if lock.locked():
+            return HttpResponse("Please wait, your previous request is still processing.", status=429)
+
+        with lock:
+
+            form = ManualBookingForm(request.POST)
+
+            if form.is_valid():
 
 
-            teacher = form.cleaned_data.get('teacher')
-            timeslot = form.cleaned_data.get('timeslot')
+                teacher = form.cleaned_data.get('teacher')
+                timeslot = form.cleaned_data.get('timeslot')
 
-            if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
+                if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
 
-                if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
+                    if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
 
-                    if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
+                        if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
 
-                        # Create an instance of the Booking model without saving it yet
-                        booking = form.save(commit=False)
+                            # Create an instance of the Booking model without saving it yet
+                            booking = form.save(commit=False)
 
-                        # Manually set the pre-filled fields
-                        booking.student = student
-                        booking.status = status
-                        booking.date = date
+                            # Manually set the pre-filled fields
+                            booking.student = student
+                            booking.status = status
+                            booking.date = date
 
-                        # Save the booking
-                        booking.save()
+                            # Save the booking
+                            booking.save()
 
+                            
+
+                            return redirect('userStudentBookings')
                         
+                        else:
+                            messages.info(request, 'You already have a booking with that teacher')
+                            form.fields['teacher'].queryset = student.teachers.all()
+                            form.fields['timeslot'].queryset = sortedTimeslots
 
-                        return redirect('userStudentBookings')
                     
                     else:
-                        messages.info(request, 'You already have a booking with that teacher')
+                        messages.info(request, 'That teacher already has a booking at that time')
                         form.fields['teacher'].queryset = student.teachers.all()
                         form.fields['timeslot'].queryset = sortedTimeslots
-
                 
                 else:
-                    messages.info(request, 'That teacher already has a booking at that time')
+                    messages.info(request, 'You already have a booking at that time')
                     form.fields['teacher'].queryset = student.teachers.all()
                     form.fields['timeslot'].queryset = sortedTimeslots
-            
-            else:
-                messages.info(request, 'You already have a booking at that time')
-                form.fields['teacher'].queryset = student.teachers.all()
-                form.fields['timeslot'].queryset = sortedTimeslots
     
 
     
