@@ -2,6 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from main.models import *
 from datetime import date, timedelta
+from django.http import HttpResponseForbidden
+import logging
+
+logger = logging.getLogger(__name__)
 
 def unauthenticated_user(view_func):
     def wrapper_func(request, *args, **kwargs):
@@ -16,10 +20,16 @@ def unauthenticated_user(view_func):
 def allowed_users(allowed_roles=[]):
     def decorator(view_func):
         def wrapper_func(request, *args, **kwargs):
+            logger.info(f"User: {request.user}, Request Path: {request.path}")
 
-            group = None
-            if request.user.groups.exists():
+            group = getattr(request.user, 'cached_group', None)
+            if group is None and request.user.groups.exists():
                 group = request.user.groups.all()[0].name
+                setattr(request.user, 'cached_group', group)  # Cache the group
+
+            #group = None
+            #if request.user.groups.exists():
+            #    group = request.user.groups.all()[0].name
             
             if group in allowed_roles:
                 return view_func(request, *args, **kwargs)
