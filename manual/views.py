@@ -76,23 +76,24 @@ def manualType(request):
                         return redirect('userStudentBookings')
                     
                     else:
+                        request.session['form_submitted'] = False
                         messages.info(request, 'You already have a booking with that teacher')
                         form.fields['teacher'].queryset = student.teachers.all()
                         form.fields['timeslot'].queryset = sortedTimeslots
-                        del request.session['form_submitted']
+                        
 
                 
                 else:
+                    request.session['form_submitted'] = False
                     messages.info(request, 'That teacher already has a booking at that time')
                     form.fields['teacher'].queryset = student.teachers.all()
                     form.fields['timeslot'].queryset = sortedTimeslots
-                    del request.session['form_submitted']
             
             else:
+                request.session['form_submitted'] = False
                 messages.info(request, 'You already have a booking at that time')
                 form.fields['teacher'].queryset = student.teachers.all()
                 form.fields['timeslot'].queryset = sortedTimeslots
-                del request.session['form_submitted']
     
 
     
