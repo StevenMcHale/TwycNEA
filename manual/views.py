@@ -16,81 +16,86 @@ import time
 #@valid_date
 def manualType(request):
 
-    student = request.user.student
-    status = 'Pending'
-    date = EveningDate.objects.get(year_group=student.year_group)
-    timeslots =  date.timeslots.all()
-    
-    sortedTimeslots = date.timeslots.all().order_by('start_time')
-    teachers = student.teachers.all()
+    try:
 
-    
-    form = ManualBookingForm()
+        student = request.user.student
+        status = 'Pending'
+        date = EveningDate.objects.get(year_group=student.year_group)
+        timeslots =  date.timeslots.all()
+        
+        sortedTimeslots = date.timeslots.all().order_by('start_time')
+        teachers = student.teachers.all()
 
-    form.fields['teacher'].queryset = student.teachers.all()
-    form.fields['timeslot'].queryset = sortedTimeslots
+        
+        form = ManualBookingForm()
 
-
-
-    if request.method == 'POST':
+        form.fields['teacher'].queryset = student.teachers.all()
+        form.fields['timeslot'].queryset = sortedTimeslots
 
 
-        form = ManualBookingForm(request.POST)
 
-        if form.is_valid():
+        if request.method == 'POST':
 
 
-            teacher = form.cleaned_data.get('teacher')
-            timeslot = form.cleaned_data.get('timeslot')
+            form = ManualBookingForm(request.POST)
 
-            if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
+            if form.is_valid():
 
-                if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
 
-                    if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
+                teacher = form.cleaned_data.get('teacher')
+                timeslot = form.cleaned_data.get('timeslot')
 
-                        # Create an instance of the Booking model without saving it yet
-                        booking = form.save(commit=False)
+                if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
 
-                        # Manually set the pre-filled fields
-                        booking.student = student
-                        booking.status = status
-                        booking.date = date
+                    if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
 
-                        # Save the booking
-                        booking.save()
-          
+                        if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
 
-                        return redirect('userStudentBookings')
+                            # Create an instance of the Booking model without saving it yet
+                            booking = form.save(commit=False)
+
+                            # Manually set the pre-filled fields
+                            booking.student = student
+                            booking.status = status
+                            booking.date = date
+
+                            # Save the booking
+                            booking.save()
+            
+
+                            return redirect('userStudentBookings')
+                        
+                        else:
+                            messages.info(request, 'You already have a booking with that teacher')
+                            form.fields['teacher'].queryset = student.teachers.all()
+                            form.fields['timeslot'].queryset = sortedTimeslots
+                            
+
                     
                     else:
-                        messages.info(request, 'You already have a booking with that teacher')
+                        messages.info(request, 'That teacher already has a booking at that time')
                         form.fields['teacher'].queryset = student.teachers.all()
                         form.fields['timeslot'].queryset = sortedTimeslots
-                        
-
                 
                 else:
-                    messages.info(request, 'That teacher already has a booking at that time')
+                    messages.info(request, 'You already have a booking at that time')
                     form.fields['teacher'].queryset = student.teachers.all()
                     form.fields['timeslot'].queryset = sortedTimeslots
-            
-            else:
-                messages.info(request, 'You already have a booking at that time')
-                form.fields['teacher'].queryset = student.teachers.all()
-                form.fields['timeslot'].queryset = sortedTimeslots
+        
+
+        
+
+        finalTimeslots = sortTimeslots(timeslots)
+
+        teachersAv = teachersAvailability(teachers, finalTimeslots, date, student)
+
+        
+
+        context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv}
+        return render(request, 'manual/manual.html', context)
     
-
-    
-
-    finalTimeslots = sortTimeslots(timeslots)
-
-    teachersAv = teachersAvailability(teachers, finalTimeslots, date, student)
-
-    
-
-    context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv}
-    return render(request, 'manual/manual.html', context)
+    except:
+        return render(request, 'manual/error.html')
 
 
 

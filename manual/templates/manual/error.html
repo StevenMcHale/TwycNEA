@@ -1,0 +1,9 @@
+{% extends 'main/main.html' %}
+
+{% block content %}
+<div style="text-align: center; margin-top: 50px;">
+    <h1>Something Went Wrong</h1>
+    <p>It seems there was an issue. Please refresh the page and try again.</p>
+    <a href="{% url 'manualType' %}" class="btn btn-primary">Refresh</a>
+</div>
+{% endblock %}
