@@ -30,8 +30,17 @@ def manualType(request):
     form.fields['teacher'].queryset = student.teachers.all()
     form.fields['timeslot'].queryset = sortedTimeslots
 
+    # Check if the form has already been submitted (prevents multiple clicks)
+    if request.session.get('form_submitted', False):
+        # If form is submitted, return a response to prevent resubmission
+        messages.info(request, 'Your request is being processed. Please wait.')
+        return redirect('manualType')  # Redirect to avoid resubmission
+
 
     if request.method == 'POST':
+
+        # Set the session flag to prevent multiple submissions
+        request.session['form_submitted'] = True
 
 
         form = ManualBookingForm(request.POST)
@@ -58,6 +67,9 @@ def manualType(request):
 
                         # Save the booking
                         booking.save()
+
+                        # After booking is created, clear the session flag
+                        del request.session['form_submitted']
 
                         
 

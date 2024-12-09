@@ -16,8 +16,16 @@
                 {{form|crispy}}
 
 
-                <br> 
-                <input class="btn btn-sm btn-success" type="submit" name="Submit">
+                <br>
+                {% if request.session.form_submitted %}
+                    <!-- Disable the button when form is submitted -->
+                    <button class="btn btn-sm btn-success" type="submit" disabled>Processing...</button>
+                {% else %}
+                    <!-- Enable the button when form is not submitted -->
+                    <button class="btn btn-sm btn-success" type="submit" name="Submit">Submit</button>
+                {% endif %}
+
+                <!--<input class="btn btn-sm btn-success" type="submit" name="Submit">-->
             </form>
 
             {% for message in messages %}
