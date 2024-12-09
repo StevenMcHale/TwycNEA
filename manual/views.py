@@ -30,17 +30,9 @@ def manualType(request):
     form.fields['teacher'].queryset = student.teachers.all()
     form.fields['timeslot'].queryset = sortedTimeslots
 
-    # Check if the form has already been submitted (prevents multiple clicks)
-    if request.session.get('form_submitted', False):
-        # If form is submitted, return a response to prevent resubmission
-        messages.info(request, 'Your request is being processed. Please wait.')
-        return redirect('manual')  # Redirect to avoid resubmission
 
 
     if request.method == 'POST':
-
-        # Set the session flag to prevent multiple submissions
-        request.session['form_submitted'] = True
 
 
         form = ManualBookingForm(request.POST)
@@ -67,16 +59,11 @@ def manualType(request):
 
                         # Save the booking
                         booking.save()
-
-                        # After booking is created, clear the session flag
-                        del request.session['form_submitted']
-
-                        
+          
 
                         return redirect('userStudentBookings')
                     
                     else:
-                        request.session['form_submitted'] = False
                         messages.info(request, 'You already have a booking with that teacher')
                         form.fields['teacher'].queryset = student.teachers.all()
                         form.fields['timeslot'].queryset = sortedTimeslots
@@ -84,13 +71,11 @@ def manualType(request):
 
                 
                 else:
-                    request.session['form_submitted'] = False
                     messages.info(request, 'That teacher already has a booking at that time')
                     form.fields['teacher'].queryset = student.teachers.all()
                     form.fields['timeslot'].queryset = sortedTimeslots
             
             else:
-                request.session['form_submitted'] = False
                 messages.info(request, 'You already have a booking at that time')
                 form.fields['teacher'].queryset = student.teachers.all()
                 form.fields['timeslot'].queryset = sortedTimeslots
