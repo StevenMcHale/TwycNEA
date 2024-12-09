@@ -34,7 +34,7 @@ def manualType(request):
     if request.session.get('form_submitted', False):
         # If form is submitted, return a response to prevent resubmission
         messages.info(request, 'Your request is being processed. Please wait.')
-        return redirect('manualType')  # Redirect to avoid resubmission
+        return redirect('manual')  # Redirect to avoid resubmission
 
 
     if request.method == 'POST':
