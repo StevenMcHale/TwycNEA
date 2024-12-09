@@ -95,6 +95,8 @@ def manualType(request):
         return render(request, 'manual/manual.html', context)
     
     except:
+        previous_page = request.META.get('HTTP_REFERER', None)
+        context = {'previous_page': previous_page}
         return render(request, 'manual/error.html')
 
 
