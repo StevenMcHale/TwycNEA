@@ -110,105 +110,112 @@ def manualType(request):
 #@valid_date
 def studentEditManualType(request, pk):
 
-    booking = Booking.objects.get(booking_id=pk)
-    oldteacher = booking.teacher
-    oldtimeslot = booking.timeslot
+    try:
 
-    student = request.user.student
-    status = 'Pending'
-    date = EveningDate.objects.get(year_group=student.year_group)
-    timeslots =  date.timeslots.all()
-    sortedTimeslots = date.timeslots.all().order_by('start_time')
-    teachers = student.teachers.all()
+        booking = Booking.objects.get(booking_id=pk)
+        oldteacher = booking.teacher
+        oldtimeslot = booking.timeslot
 
-    
-    form = ManualBookingForm(instance=booking)
+        student = request.user.student
+        status = 'Pending'
+        date = EveningDate.objects.get(year_group=student.year_group)
+        timeslots =  date.timeslots.all()
+        sortedTimeslots = date.timeslots.all().order_by('start_time')
+        teachers = student.teachers.all()
 
-    form.fields['teacher'].queryset = student.teachers.all()
-    form.fields['timeslot'].queryset = sortedTimeslots
+        
+        form = ManualBookingForm(instance=booking)
 
-
-    if request.method == 'POST':
-        form = ManualBookingForm(request.POST, instance=booking)
-
-        if form.is_valid():
-
-            teacher = form.cleaned_data.get('teacher')
-            timeslot = form.cleaned_data.get('timeslot')
+        form.fields['teacher'].queryset = student.teachers.all()
+        form.fields['timeslot'].queryset = sortedTimeslots
 
 
+        if request.method == 'POST':
+            form = ManualBookingForm(request.POST, instance=booking)
 
-            if teacher == oldteacher:
-                if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
+            if form.is_valid():
 
-                    if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
+                teacher = form.cleaned_data.get('teacher')
+                timeslot = form.cleaned_data.get('timeslot')
 
-                        form.save()
-                        return redirect('userStudentBookings')
-                        
+
+
+                if teacher == oldteacher:
+                    if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
+
+                        if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
+
+                            form.save()
+                            return redirect('userStudentBookings')
+                            
+                        else:
+                            messages.info(request, 'That teacher already has a booking at that time')
+                            form.fields['teacher'].queryset = student.teachers.all()
+                            form.fields['timeslot'].queryset = sortedTimeslots
+                    
                     else:
-                        messages.info(request, 'That teacher already has a booking at that time')
-                        form.fields['teacher'].queryset = student.teachers.all()
-                        form.fields['timeslot'].queryset = sortedTimeslots
-                
-                else:
-                    messages.info(request, 'You already have a booking at that time')
-                    form.fields['teacher'].queryset = student.teachers.all()
-                    form.fields['timeslot'].queryset = sortedTimeslots
-
-
-
-            elif timeslot == oldtimeslot:
-                if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
-
-                    if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
-
-                        form.save()
-                        return redirect('userStudentBookings')
-                        
-                    else:
-                        messages.info(request, 'You already have a booking with that teacher')
+                        messages.info(request, 'You already have a booking at that time')
                         form.fields['teacher'].queryset = student.teachers.all()
                         form.fields['timeslot'].queryset = sortedTimeslots
 
-                else:
-                    messages.info(request, 'That teacher already has a booking at that time')
-                    form.fields['teacher'].queryset = student.teachers.all()
-                    form.fields['timeslot'].queryset = sortedTimeslots
-            
-            else:
 
 
-                if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
-
+                elif timeslot == oldtimeslot:
                     if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
 
                         if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
 
                             form.save()
                             return redirect('userStudentBookings')
-                        
+                            
                         else:
                             messages.info(request, 'You already have a booking with that teacher')
                             form.fields['teacher'].queryset = student.teachers.all()
                             form.fields['timeslot'].queryset = sortedTimeslots
 
-                    
                     else:
                         messages.info(request, 'That teacher already has a booking at that time')
                         form.fields['teacher'].queryset = student.teachers.all()
                         form.fields['timeslot'].queryset = sortedTimeslots
                 
                 else:
-                    messages.info(request, 'You already have a booking at that time')
-                    form.fields['teacher'].queryset = student.teachers.all()
-                    form.fields['timeslot'].queryset = sortedTimeslots
-    
 
-    finalTimeslots = sortTimeslots(timeslots)
 
-    teachersAv = teachersAvailability(teachers, finalTimeslots, date, student)
-    
+                    if Booking.objects.filter(student=student, timeslot=timeslot, date=date).count() == 0:
 
-    context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv}
-    return render(request, 'manual/manual.html', context)
+                        if Booking.objects.filter(teacher=teacher, timeslot=timeslot, date=date).count() == 0:
+
+                            if Booking.objects.filter(teacher=teacher, student=student, date=date).count() == 0:
+
+                                form.save()
+                                return redirect('userStudentBookings')
+                            
+                            else:
+                                messages.info(request, 'You already have a booking with that teacher')
+                                form.fields['teacher'].queryset = student.teachers.all()
+                                form.fields['timeslot'].queryset = sortedTimeslots
+
+                        
+                        else:
+                            messages.info(request, 'That teacher already has a booking at that time')
+                            form.fields['teacher'].queryset = student.teachers.all()
+                            form.fields['timeslot'].queryset = sortedTimeslots
+                    
+                    else:
+                        messages.info(request, 'You already have a booking at that time')
+                        form.fields['teacher'].queryset = student.teachers.all()
+                        form.fields['timeslot'].queryset = sortedTimeslots
+        
+
+        finalTimeslots = sortTimeslots(timeslots)
+
+        teachersAv = teachersAvailability(teachers, finalTimeslots, date, student)
+        
+
+        context = {'form':form, 'timeslots':finalTimeslots, 'teachers':teachers, 'teachersAv':teachersAv}
+        return render(request, 'manual/manual.html', context)
+
+    except:
+        previous_page = request.META.get('HTTP_REFERER', None)
+        context = {'previous_page': previous_page}
+        return render(request, 'manual/error.html', context)
