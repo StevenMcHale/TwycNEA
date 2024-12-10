@@ -940,12 +940,19 @@ def editBooking(request, pk):
 @allowed_users(allowed_roles=['admin', 'student'])
 def deleteBooking(request, pk):
 
-    booking = Booking.objects.get(booking_id=pk)
+    try:
 
-    if request.method == "POST":
-        booking.delete()
-        return redirect('bookings')
+        booking = Booking.objects.get(booking_id=pk)
+
+        if request.method == "POST":
+            booking.delete()
+            return redirect('bookings')
 
 
-    context = {'item':booking}
-    return render(request, 'crud/booking_delete.html', context)
+        context = {'item':booking}
+        return render(request, 'crud/booking_delete.html', context)
+    
+    except:
+        previous_page = request.META.get('HTTP_REFERER', None)
+        context = {'previous_page': previous_page}
+        return render(request, 'manual/error.html', context)
