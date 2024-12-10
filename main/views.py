@@ -45,19 +45,26 @@ def dashboard(request):
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin', 'teacher'])
 def bookings(request):
-    bookings = Booking.objects.all()
-    bookings = bookings.order_by('timeslot')
+    try:
 
-    total_bookings = bookings.count()
-    complete = bookings.filter(status="Complete").count()
-    pending = bookings.filter(status="Pending").count()
+        bookings = Booking.objects.all()
+        bookings = bookings.order_by('timeslot')
 
-    myFilter = BookingFilter(request.GET, queryset=bookings)
-    bookings = myFilter.qs
+        total_bookings = bookings.count()
+        complete = bookings.filter(status="Complete").count()
+        pending = bookings.filter(status="Pending").count()
 
-    context = {'bookings':bookings, 'total_bookings':total_bookings, 'complete':complete, 'pending':pending, 'myFilter':myFilter}
+        myFilter = BookingFilter(request.GET, queryset=bookings)
+        bookings = myFilter.qs
 
-    return render(request, 'main/bookings.html', context)
+        context = {'bookings':bookings, 'total_bookings':total_bookings, 'complete':complete, 'pending':pending, 'myFilter':myFilter}
+
+        return render(request, 'main/bookings.html', context)
+    
+    except:
+        previous_page = request.META.get('HTTP_REFERER', None)
+        context = {'previous_page': previous_page}
+        return render(request, 'manual/error.html', context)
 
 
 @login_required(login_url='login')
