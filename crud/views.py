@@ -14,19 +14,24 @@ from django.contrib.auth.models import User
 @allowed_users(allowed_roles=['admin'])
 def changeTeacherPass(request, pk):
 
+    try:
 
-    if request.method == 'POST':
-        newPassword = request.POST.get('password')
 
-        uname = Teacher.objects.get(id=pk).user.username
+        if request.method == 'POST':
+            newPassword = request.POST.get('password')
 
-        user = User.objects.get(username=uname)
-        user.set_password(newPassword)
-        user.save()
-        return redirect('dashboard')
+            uname = Teacher.objects.get(id=pk).user.username
 
-    context = {}
-    return render(request, 'crud/changePass.html', context)
+            user = User.objects.get(username=uname)
+            user.set_password(newPassword)
+            user.save()
+            return redirect('dashboard')
+
+        context = {}
+        return render(request, 'crud/changePass.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -34,19 +39,24 @@ def changeTeacherPass(request, pk):
 @allowed_users(allowed_roles=['admin'])
 def changeStudentPass(request, pk):
 
+    try:
 
-    if request.method == 'POST':
-        newPassword = request.POST.get('password')
 
-        uname = Student.objects.get(id=pk).user.username
+        if request.method == 'POST':
+            newPassword = request.POST.get('password')
 
-        user = User.objects.get(username=uname)
-        user.set_password(newPassword)
-        user.save()
-        return redirect('dashboard')
+            uname = Student.objects.get(id=pk).user.username
 
-    context = {}
-    return render(request, 'crud/changePass.html', context)
+            user = User.objects.get(username=uname)
+            user.set_password(newPassword)
+            user.save()
+            return redirect('dashboard')
+
+        context = {}
+        return render(request, 'crud/changePass.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -116,36 +126,46 @@ def createParent(request):
 @allowed_users(allowed_roles=['admin'])
 def editParent(request, pk):
 
-    parent = Parent.objects.get(id=pk)
+    try:
 
-    form = ParentForm(instance=parent)
+        parent = Parent.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = ParentForm(instance=parent)
 
-        form = ParentForm(request.POST, instance=parent)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = ParentForm(request.POST, instance=parent)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/create_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/create_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteParent(request, pk):
 
-    parent = Parent.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        parent.delete()
-        return redirect('dashboard')
+        parent = Parent.objects.get(id=pk)
+
+        if request.method == "POST":
+            parent.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':parent}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':parent}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -177,36 +197,46 @@ def createBuilding(request):
 @allowed_users(allowed_roles=['admin'])
 def editBuilding(request, pk):
 
-    building = Building.objects.get(id=pk)
+    try:
 
-    form = BuildingForm(instance=building)
+        building = Building.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = BuildingForm(instance=building)
 
-        form = BuildingForm(request.POST, instance=building)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = BuildingForm(request.POST, instance=building)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/create_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/create_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteBuilding(request, pk):
 
-    building = Building.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        building.delete()
-        return redirect('dashboard')
+        building = Building.objects.get(id=pk)
+
+        if request.method == "POST":
+            building.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':building}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':building}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -240,36 +270,46 @@ def createRoom(request):
 @allowed_users(allowed_roles=['admin'])
 def editRoom(request, pk):
 
-    room = Room.objects.get(id=pk)
+    try:
 
-    form = RoomForm(instance=room)
+        room = Room.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = RoomForm(instance=room)
 
-        form = RoomForm(request.POST, instance=room)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = RoomForm(request.POST, instance=room)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/create_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/create_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteRoom(request, pk):
 
-    room = Room.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        room.delete()
-        return redirect('dashboard')
+        room = Room.objects.get(id=pk)
+
+        if request.method == "POST":
+            room.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':room}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':room}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -303,36 +343,46 @@ def createSubject(request):
 @allowed_users(allowed_roles=['admin'])
 def editSubject(request, pk):
 
-    subject = Subject.objects.get(id=pk)
+    try:
 
-    form = SubjectForm(instance=subject)
+        subject = Subject.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = SubjectForm(instance=subject)
 
-        form = SubjectForm(request.POST, instance=subject)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = SubjectForm(request.POST, instance=subject)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/create_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/create_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteSubject(request, pk):
 
-    subject = Subject.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        subject.delete()
-        return redirect('dashboard')
+        subject = Subject.objects.get(id=pk)
+
+        if request.method == "POST":
+            subject.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':subject}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':subject}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -367,36 +417,46 @@ def createTimeslot(request):
 @allowed_users(allowed_roles=['admin'])
 def editTimeslot(request, pk):
 
-    timeslot = Timeslot.objects.get(id=pk)
+    try:
 
-    form = TimeslotForm(instance=timeslot)
+        timeslot = Timeslot.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = TimeslotForm(instance=timeslot)
 
-        form = TimeslotForm(request.POST, instance=timeslot)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = TimeslotForm(request.POST, instance=timeslot)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/timeslot_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/timeslot_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteTimeslot(request, pk):
 
-    timeslot = Timeslot.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        timeslot.delete()
-        return redirect('dashboard')
+        timeslot = Timeslot.objects.get(id=pk)
+
+        if request.method == "POST":
+            timeslot.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':timeslot}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':timeslot}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -430,36 +490,46 @@ def createEveningDate(request):
 @allowed_users(allowed_roles=['admin'])
 def editEveningDate(request, pk):
 
-    eveningDate = EveningDate.objects.get(id=pk)
+    try:
 
-    form = EveningDateForm(instance=eveningDate)
+        eveningDate = EveningDate.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = EveningDateForm(instance=eveningDate)
 
-        form = EveningDateForm(request.POST, instance=eveningDate)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = EveningDateForm(request.POST, instance=eveningDate)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/date_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/date_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteEveningDate(request, pk):
 
-    eveningDate = EveningDate.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        eveningDate.delete()
-        return redirect('dashboard')
+        eveningDate = EveningDate.objects.get(id=pk)
+
+        if request.method == "POST":
+            eveningDate.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':eveningDate}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':eveningDate}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -494,36 +564,46 @@ def createTeacher(request):
 @allowed_users(allowed_roles=['admin'])
 def editTeacher(request, pk):
 
-    teacher = Teacher.objects.get(id=pk)
+    try:
 
-    form = TeacherForm(instance=teacher)
+        teacher = Teacher.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = TeacherForm(instance=teacher)
 
-        form = TeacherForm(request.POST, instance=teacher)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = TeacherForm(request.POST, instance=teacher)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/create_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/create_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteTeacher(request, pk):
 
-    teacher = Teacher.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        teacher.delete()
-        return redirect('dashboard')
+        teacher = Teacher.objects.get(id=pk)
+
+        if request.method == "POST":
+            teacher.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':teacher}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':teacher}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -559,36 +639,46 @@ def createStudent(request):
 @allowed_users(allowed_roles=['admin'])
 def editStudent(request, pk):
 
-    student = Student.objects.get(id=pk)
+    try:
 
-    form = StudentForm(instance=student)
+        student = Student.objects.get(id=pk)
 
-    if request.method == 'POST':
-        #print(request.POST)
+        form = StudentForm(instance=student)
 
-        form = StudentForm(request.POST, instance=student)
-        if form.is_valid():
-            form.save()
-            return redirect('dashboard')
+        if request.method == 'POST':
+            #print(request.POST)
+
+            form = StudentForm(request.POST, instance=student)
+            if form.is_valid():
+                form.save()
+                return redirect('dashboard')
 
 
-    context = {'form':form}
-    return render(request, 'crud/create_form.html', context)
+        context = {'form':form}
+        return render(request, 'crud/create_form.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def deleteStudent(request, pk):
 
-    student = Student.objects.get(id=pk)
+    try:
 
-    if request.method == "POST":
-        student.delete()
-        return redirect('dashboard')
+        student = Student.objects.get(id=pk)
+
+        if request.method == "POST":
+            student.delete()
+            return redirect('dashboard')
 
 
-    context = {'item':student}
-    return render(request, 'crud/delete.html', context)
+        context = {'item':student}
+        return render(request, 'crud/delete.html', context)
+    
+    except:
+        return render(request, 'manual/error.html')
 
 
 
@@ -953,5 +1043,4 @@ def deleteBooking(request, pk):
         return render(request, 'crud/booking_delete.html', context)
     
     except:
-        context = {}
-        return render(request, 'manual/error.html', context)
+        return render(request, 'manual/error.html')
