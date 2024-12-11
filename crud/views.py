@@ -953,6 +953,5 @@ def deleteBooking(request, pk):
         return render(request, 'crud/booking_delete.html', context)
     
     except:
-        previous_page = request.META.get('HTTP_REFERER', None)
-        context = {'previous_page': previous_page}
+        context = {}
         return render(request, 'manual/error.html', context)
