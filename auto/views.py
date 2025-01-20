@@ -11,9 +11,19 @@ from .map import twyc_map
 from users.decorators import *
 from users.decorators import unauthenticated_user, allowed_users
 from django.contrib.auth.decorators import login_required
+import threading
 
 
 # Create your views here.
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['student'])
+def processing(request):
+    return render(request, 'auto/processing.html')
+
+
+
 
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['student'])
@@ -33,7 +43,8 @@ def automatic(request):
             messages.info(request, 'Invalid Input')
         else:
 
-            response = render(request, 'auto/processing.html')
+            t1 = threading.Thread(target=processing)
+            t1.start()
 
             # Find all timeslots in the ranage given excluding timeslots already booked by student
 
