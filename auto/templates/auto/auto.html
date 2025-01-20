@@ -2,6 +2,12 @@
 {% load static %}
 {% block content %}
 <br>
+<div id="loadingModal" style="display: none;">
+    <button class="btn btn-primary" type="button" disabled>
+      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+      Loading...
+    </button>
+</div>
 <div class="row">
     <div class="col-md-3">
         <div class="card card-body">
@@ -9,7 +15,7 @@
             <h3>Timeslot Selection</h3>
             <br>
 
-            <form method="POST" action="">
+            <form method="POST" action="" onsubmit="openLoader()">
                 {% csrf_token %}
                 
                 <h5>Start Time:</h5>
@@ -39,5 +45,12 @@
         </div>
     </div>
 </div>
+<script>
+
+function openLoader() {
+    document.getElementById("loadingModal").style.display = "block";
+}
+    
+</script>
 {% endblock %}
 
