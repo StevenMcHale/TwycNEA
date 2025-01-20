@@ -48,10 +48,8 @@ function openLoader() {
     
     // Disable the button and change its appearance
     submitButton.disabled = true;
-    submitButton.innerHTML = `
-        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-        Processing...
-    `;
+    submitButton.value = "Processing...";
+    submitButton.classList.add("spinner-grow", "spinner-grow-sm");
 }
 </script>
 {% endblock %}
