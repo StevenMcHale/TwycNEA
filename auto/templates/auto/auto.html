@@ -2,12 +2,7 @@
 {% load static %}
 {% block content %}
 <br>
-<div id="loadingModal" style="display: none;">
-    <button class="btn btn-primary" type="button" disabled>
-      <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-      Loading...
-    </button>
-</div>
+
 <div class="row">
     <div class="col-md-3">
         <div class="card card-body">
@@ -36,7 +31,7 @@
 
                 <br>
 
-                <input class="btn btn-sm btn-success" type="submit" name="Submit">
+                <input id="submitButton" class="btn btn-sm btn-success" type="submit" name="Submit">
             </form>
 
             {% for message in messages %}
@@ -47,10 +42,24 @@
 </div>
 <script>
 
-function openLoader() {
-    document.getElementById("loadingModal").style.display = "block";
-}
+function openLoader(event) {
+    // Prevent form submission to allow the button changes to take effect
+    event.preventDefault();
     
+    const submitButton = document.getElementById("submitButton");
+    
+    // Disable the button and set it to loading state
+    submitButton.disabled = true;
+    submitButton.innerHTML = `
+        <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+        Processing...
+    `;
+    
+    // Submit the form after a short delay to simulate processing time
+    setTimeout(() => {
+        event.target.submit(); // Submit the form
+    }, 3000); // Adjust the delay as needed
+}
 </script>
 {% endblock %}
 
