@@ -33,7 +33,7 @@ def automatic(request):
             messages.info(request, 'Invalid Input')
         else:
 
-            
+            response = render(request, 'auto/processing.html')
 
             # Find all timeslots in the ranage given excluding timeslots already booked by student
 
