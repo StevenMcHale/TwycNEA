@@ -771,7 +771,12 @@ def adminEditBooking(request, pk):
             student = form.cleaned_data.get('student')
             teacher = form.cleaned_data.get('teacher')
             timeslot = form.cleaned_data.get('timeslot')
+            status = form.cleaned_data.get('status')
             date = form.cleaned_data.get('date')
+
+            if status == 'Complete':
+                form.save()
+                return redirect('bookings')
 
 
             if student.year_group == date.year_group:
