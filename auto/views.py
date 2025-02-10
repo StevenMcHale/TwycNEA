@@ -26,6 +26,7 @@ def automatic(request):
     date = EveningDate.objects.get(year_group=student.year_group)
     timeslots =  date.timeslots.all()
     timeslots = sortTimeslots(timeslots)
+    no = 0
 
     if request.method == 'POST':
         start_time = request.POST.get('start_time')
@@ -194,6 +195,7 @@ def automatic(request):
 
 
                     finalSolutions = bubbleSortBreaks(finalSolutions)
+                    no = len(finalSolutions)
 
                     
                     # Put solutions in stack get pop (best solution)
@@ -254,9 +256,10 @@ def automatic(request):
                                     status='Pending',
                                     date=date,
                                 )
-                    
-                    messages.info(request, len(finalSolutions))
-                    #return redirect('userStudentBookings')
+
+
+
+                    return redirect('userStudentBookings')
                 
                 else:
                     messages.info(request, 'There are no solutions')
@@ -483,9 +486,9 @@ def automatic(request):
                                     date=date,
                                 )
 
-                    no = len(finalSolutions)
-                    #return redirect('userStudentBookings')
-                    messages.info(request, f'{no}')
+
+                    return redirect('userStudentBookings')
+
                 
                 else:
                     messages.info(request, 'There are no solutions')
@@ -509,5 +512,5 @@ def automatic(request):
 
     
 
-    context = {'timeslots':timeslots}
+    context = {'timeslots':timeslots, 'no':no}
     return render(request, 'auto/auto.html', context)
