@@ -488,7 +488,7 @@ def automatic(request):
                                 )
 
 
-                    return redirect('userStudentBookings')
+                    #return redirect('userStudentBookings')
 
                 
                 else:
