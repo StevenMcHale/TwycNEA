@@ -221,6 +221,9 @@ def userTeacherBookings(request):
     return render(request, 'users/userTeacherBookings.html', context)
 
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['student'])
 def generate_bookings_pdf_students(request):
     # Create a buffer to hold the PDF
     buffer = BytesIO()
@@ -275,6 +278,9 @@ def generate_bookings_pdf_students(request):
     return HttpResponse(buffer, content_type="application/pdf")
 
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['teacher'])
 def generate_bookings_pdf_teachers(request):
     # Create a buffer to hold the PDF
     buffer = BytesIO()
