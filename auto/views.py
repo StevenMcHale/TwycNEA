@@ -105,7 +105,7 @@ def automatic(request):
 
                     # Update all timeslots with booked teacher
 
-                    for booking in request.user.student.booking_set.all():
+                    for booking in bookings:
                         solutionDict[booking.timeslot] = booking.teacher.name
                     
 
@@ -235,7 +235,7 @@ def automatic(request):
                     # Remove curremt bookings and empty bookings
 
 
-                    for booking in request.user.student.booking_set.all():
+                    for booking in bookings:
                         del optimalBreakSolution[booking.timeslot]
                     
                     for timeslot in timeslots:
@@ -329,7 +329,7 @@ def automatic(request):
 
                         # Update all timeslots with booked teacher
 
-                        for booking in request.user.student.booking_set.all():
+                        for booking in bookings:
                             solutionDict[booking.timeslot] = booking.teacher.name
 
 
@@ -465,9 +465,9 @@ def automatic(request):
 
                     # Remove current bookings and empty bookings
 
-                    for booking in request.user.student.booking_set.all():
+                    for booking in bookings:
                         del optimalBreakSolution[booking.timeslot]
-                    
+                
                     for timeslot in timeslots:
                         if timeslot in optimalBreakSolution.keys():
                             if optimalBreakSolution[timeslot] == 0:
