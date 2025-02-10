@@ -483,9 +483,9 @@ def automatic(request):
                                     date=date,
                                 )
 
-                    
+                    no = len(finalSolutions)
                     #return redirect('userStudentBookings')
-                    messages.info(request, len(finalSolutions))
+                    messages.info(request, f'{no}')
                 
                 else:
                     messages.info(request, 'There are no solutions')
