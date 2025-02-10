@@ -229,7 +229,7 @@ def generate_bookings_pdf_students(request):
 
     # Title
     p.setFont("Helvetica-Bold", 16)
-    p.drawString(200, height - 50, "Teacher's Bookings Summary")
+    p.drawString(200, height - 50, "Students's Bookings Summary")
 
     # Table Headers
     p.setFont("Helvetica-Bold", 12)
