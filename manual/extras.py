@@ -141,8 +141,15 @@ def teachersAvailabilityAuto(pTeachers, pTimeslots, pDate):
     for teacher in pTeachers:
         teacherList = []
         teacherList.append(teacher.name)
+        
+        bookings = teacher.booking_set.filter(teacher=teacher, date=pDate)
+        timeslots = []
+        for booking in bookings:
+            timeslots.append(booking.timeslot)
+
         for timeslot in pTimeslots:
-            if teacher.booking_set.filter(teacher=teacher, timeslot=timeslot, date=pDate).count() == 0:
+            #if teacher.booking_set.filter(teacher=teacher, timeslot=timeslot, date=pDate).count() == 0:
+            if timeslot not in timeslots:
                 teacherList.append(0)
             else:
                 teacherList.append(1)

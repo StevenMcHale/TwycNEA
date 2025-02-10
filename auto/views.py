@@ -38,36 +38,32 @@ def automatic(request):
 
             # Find all timeslots in the ranage given excluding timeslots already booked by student
 
+            bookings = request.user.student.booking_set.all()
+            timeslotsBooked = []
+            for booking in bookings:
+                timeslotsBooked.append(booking.timeslot)
+
             userTimeslots = []
             for timeslot in timeslots:
-                if str(timeslot) >= start_time and str(timeslot) <= end_time:
-
-                    bookings = request.user.student.booking_set.all()
-                    timeslotsBooked = []
-                    for booking in bookings:
-                        timeslotsBooked.append(booking.timeslot)
-
-                    if timeslot not in timeslotsBooked:
-                        userTimeslots.append(timeslot)
+                if (str(timeslot) >= start_time and str(timeslot) <= end_time) and (timeslot not in timeslotsBooked):
+                    userTimeslots.append(timeslot)
 
 
 
             # Number of how many teachers are left
-            teachersLeft = student.teachers.all().count() - request.user.student.booking_set.all().count()
+            allteachers = student.teachers.all()
+            teachersLeft = allteachers.count() - bookings.count()
 
             # Get list of teachers that havent been booked with
             teachersBooked = []
             teachers = []
 
-            for booking in request.user.student.booking_set.all():
+            for booking in bookings:
                 teachersBooked.append(booking.teacher)
             
-            for teacher in student.teachers.all():
+            for teacher in allteachers:
                 if teacher not in teachersBooked:
                     teachers.append(teacher)
-
-
-
 
 
 
@@ -259,7 +255,8 @@ def automatic(request):
                                     date=date,
                                 )
                     
-                    return redirect('userStudentBookings')
+                    messages.info(request, len(finalSolutions))
+                    #return redirect('userStudentBookings')
                 
                 else:
                     messages.info(request, 'There are no solutions')
@@ -487,7 +484,8 @@ def automatic(request):
                                 )
 
                     
-                    return redirect('userStudentBookings')
+                    #return redirect('userStudentBookings')
+                    messages.info(request, len(finalSolutions))
                 
                 else:
                     messages.info(request, 'There are no solutions')
