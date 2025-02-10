@@ -426,6 +426,7 @@ def automatic(request):
                     
 
                     finalSolutions = bubbleSortBreaks(finalSolutions)
+                    no = len(finalSolutions)
 
 
                     # Put solutions in a stack
