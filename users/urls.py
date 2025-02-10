@@ -14,4 +14,7 @@ urlpatterns = [
 
     path('userStudentBookings/', views.userStudentBookings, name="userStudentBookings"),
     path('userTeacherBookings/', views.userTeacherBookings, name="userTeacherBookings"),
+
+    path("bookings_students/pdf/", views.generate_bookings_pdf_students, name="bookings_pdf_students"),
+    path("bookings_teachers/pdf/", views.generate_bookings_pdf_teachers, name="bookings_pdf_teachers"),
 ]

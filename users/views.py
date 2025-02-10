@@ -8,6 +8,11 @@ from .decorators import unauthenticated_user, allowed_users
 from django.contrib.auth.models import Group
 from main.models import *
 from manual.extras import *
+# pdf imports
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
 
 # Create your views here.
 
@@ -214,3 +219,109 @@ def userTeacherBookings(request):
 
     context = {'teacher':teacher, 'bookings':finalBookings, 'total_bookings':total_bookings}
     return render(request, 'users/userTeacherBookings.html', context)
+
+
+def generate_bookings_pdf_students(request):
+    # Create a buffer to hold the PDF
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    # Title
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, height - 50, "Teacher's Bookings Summary")
+
+    # Table Headers
+    p.setFont("Helvetica-Bold", 12)
+    headers = ["Start Time", "Teacher", "Subject", "Date","Building", "Room", "Status"]
+    x_offset = 50
+    y_offset = height - 100
+
+    for i, header in enumerate(headers):
+        p.drawString(x_offset + i * 100, y_offset, header)
+
+    # Table Data
+    p.setFont("Helvetica", 10)
+    y_offset -= 20
+
+    bookings = Booking.objects.filter(student=request.user.student)  # Assuming student is logged in
+    bookings = sortBookings(bookings)
+    for booking in bookings:
+        subjects = ", ".join(
+            [subject.name for subject in booking.student.subjects.all() if subject in booking.teacher.subjects.all()]
+        )
+        
+        data = [
+            booking.timeslot.start_time.strftime("%H:%M"),
+            booking.teacher.name,
+            subjects,
+            booking.date.date.strftime("%Y-%m-%d"),
+            booking.teacher.building.name,
+            booking.teacher.room.name,
+            booking.status
+        ]
+
+        for i, text in enumerate(data):
+            p.drawString(x_offset + i * 100, y_offset, text)
+
+        y_offset -= 20
+
+    # Save PDF to buffer
+    p.showPage()
+    p.save()
+
+    # Send PDF response
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type="application/pdf")
+
+
+def generate_bookings_pdf_teachers(request):
+    # Create a buffer to hold the PDF
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    # Title
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, height - 50, "Teacher's Bookings Summary")
+
+    # Table Headers
+    p.setFont("Helvetica-Bold", 12)
+    headers = ["Start Time", "Student", "Subject", "Date", "Status"]
+    x_offset = 50
+    y_offset = height - 100
+
+    for i, header in enumerate(headers):
+        p.drawString(x_offset + i * 100, y_offset, header)
+
+    # Table Data
+    p.setFont("Helvetica", 10)
+    y_offset -= 20
+
+    bookings = Booking.objects.filter(teacher=request.user.teacher)  # Assuming teacher is logged in
+    bookings = sortBookings(bookings)
+    for booking in bookings:
+        subjects = ", ".join(
+            [subject.name for subject in booking.teacher.subjects.all() if subject in booking.student.subjects.all()]
+        )
+        
+        data = [
+            booking.timeslot.start_time.strftime("%H:%M"),
+            booking.student.name,
+            subjects,
+            booking.date.date.strftime("%Y-%m-%d"),
+            booking.status
+        ]
+
+        for i, text in enumerate(data):
+            p.drawString(x_offset + i * 100, y_offset, text)
+
+        y_offset -= 20
+
+    # Save PDF to buffer
+    p.showPage()
+    p.save()
+
+    # Send PDF response
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type="application/pdf")
