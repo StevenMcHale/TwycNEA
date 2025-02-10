@@ -259,7 +259,7 @@ def automatic(request):
 
 
 
-                    return redirect('userStudentBookings')
+                    #return redirect('userStudentBookings')
                 
                 else:
                     messages.info(request, 'There are no solutions')
