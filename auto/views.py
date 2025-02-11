@@ -355,7 +355,7 @@ def automatic(request):
                             break
 
 
-                
+                first_time = time.time() - start_time
 
                 if solutionQueue.getQueueLength() != 0:
 
@@ -433,7 +433,7 @@ def automatic(request):
 
                         finalSolutions.append(currentDict)
 
-
+                    second_time = time.time() - start_time
 
                     # Sort solutions on breaks or distance
                     
@@ -473,7 +473,7 @@ def automatic(request):
                     else:
                         optimalBreakSolution = solutionStack.pop()
 
-
+                    third_time = time.time() - start_time
 
 
                     # Remove current bookings and empty bookings
@@ -500,7 +500,7 @@ def automatic(request):
                                     date=date,
                                 )
 
-
+                    fourth_time = time.time() - start_time
                     #return redirect('userStudentBookings')
 
                 
