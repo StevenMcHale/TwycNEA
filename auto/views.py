@@ -11,7 +11,7 @@ from .map import twyc_map
 from users.decorators import *
 from users.decorators import unauthenticated_user, allowed_users
 from django.contrib.auth.decorators import login_required
-
+import time
 
 # Create your views here.
 
@@ -27,6 +27,10 @@ def automatic(request):
     timeslots =  date.timeslots.all()
     timeslots = sortTimeslots(timeslots)
     no = 0
+    first_time = 0
+    second_time = 0
+    third_time = 0
+    fourth_time = 0
 
     if request.method == 'POST':
         start_time = request.POST.get('start_time')
@@ -68,7 +72,7 @@ def automatic(request):
 
 
 
-
+            start_time = time.time()
 
             if teachersLeft == len(userTimeslots):
 
@@ -114,6 +118,8 @@ def automatic(request):
                     if solutionQueue.isFull():
                         break
                 
+                
+                first_time = time.time() - start_time
 
                 if solutionQueue.getQueueLength() != 0:
 
@@ -190,6 +196,8 @@ def automatic(request):
 
                         finalSolutions.append(currentDict)
 
+                    second_time = time.time() - start_time
+
 
                     # Sort solutions on breaks or distance
 
@@ -231,6 +239,8 @@ def automatic(request):
                     else:
                         optimalBreakSolution = solutionStack.pop()
 
+                    third_time = time.time() - start_time
+
 
                     # Remove curremt bookings and empty bookings
 
@@ -258,7 +268,7 @@ def automatic(request):
                                 )
 
 
-
+                    fourth_time = time.time() - start_time
                     #return redirect('userStudentBookings')
                 
                 else:
@@ -516,5 +526,5 @@ def automatic(request):
 
     
 
-    context = {'timeslots':timeslots, 'no':no}
+    context = {'timeslots':timeslots, 'no':no, 'first_time':first_time, 'second_time':second_time, 'third_time':third_time, 'fourth_time':fourth_time}
     return render(request, 'auto/auto.html', context)
