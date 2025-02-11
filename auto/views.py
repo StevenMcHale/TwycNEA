@@ -6,8 +6,6 @@ from datetime import datetime
 from manual.extras import *
 from .backtracking import *
 from .extras import *
-from .map import *
-from .map import twyc_map
 from users.decorators import *
 from users.decorators import unauthenticated_user, allowed_users
 from django.contrib.auth.decorators import login_required
