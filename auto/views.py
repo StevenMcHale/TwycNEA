@@ -397,10 +397,29 @@ def automatic(request):
                                 else:
                                     teachersOrder.append(currentDict[timeslot])
 
+                        # Put through graph
                         
 
+                        count = 0
+
+                        while count < len(teachersOrder)-1:
+
+                            currentTeacher = Teacher.objects.get(name=teachersOrder[count])
+                            nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
+
+                            map = twyc_map
+                            currentNode = map.getNode(currentTeacher.building.name)
+
+                            if currentTeacher.building != nextTeacher.building:
+                                nodeWeight = currentNode.getLinkWeight(nextTeacher.building.name)
+                            else:
+                                nodeWeight = 0
+
+                            distance += nodeWeight
+                            count += 1
+
                         currentDict['Breaks'] = breaks
-                        
+                        currentDict['Distance'] = distance
 
                         finalSolutions.append(currentDict)
 
@@ -436,47 +455,6 @@ def automatic(request):
 
 
                         if len(optimalSolutions) > 1:
-
-                            for optimalSolution in optimalSolutions:
-
-                                # Calculate breaks and distance                           
-
-                                distance = 0
-                                breaks = 0
-                                teachersOrder = []
-
-                                # Calculate breaks between start and end appointments
-
-                                for timeslot in timeslots:
-                                    if timeslot in currentDict.keys():
-                                        if currentDict[timeslot] == 0:
-                                            breaks += 1
-                                        else:
-                                            teachersOrder.append(currentDict[timeslot])
-
-                                # Put through graph 
-                            
-
-                                count = 0
-
-                                while count < len(teachersOrder)-1:
-
-                                    currentTeacher = Teacher.objects.get(name=teachersOrder[count])
-                                    nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
-
-                                    map = twyc_map
-                                    currentNode = map.getNode(currentTeacher.building.name)
-
-                                    if currentTeacher.building != nextTeacher.building:
-                                        nodeWeight = currentNode.getLinkWeight(nextTeacher.building.name)
-                                    else:
-                                        nodeWeight = 0
-
-                                    distance += nodeWeight
-                                    count += 1
-
-                                optimalSolution['Distance'] = distance
-
                             optimalSolutions = bubbleSortDistance(optimalSolutions)
                             optimalBreakSolution = optimalSolutions[0]
                         else:
