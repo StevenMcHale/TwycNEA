@@ -47,38 +47,40 @@ class Map(object):
     def getMap(self):
         return self.__nodes
 
+def buildMap():
+
+    buildings = Building.objects.all()
 
 
-buildings = Building.objects.all()
+    twyc_map = Map()
+
+    for building in buildings:
+        newNode = Node(building.name)
+        twyc_map.addNode(newNode)
 
 
-twyc_map = Map()
+    for node in twyc_map.getMap():
+        if node.getNodeName() == "Kirkpatrick Theatre":
+            node.addlink("Berryfield", 7)
+            node.addlink("Underwood", 3)
+            node.addlink("Old Stables", 5)
 
-for building in buildings:
-    newNode = Node(building.name)
-    twyc_map.addNode(newNode)
+        elif node.getNodeName() == "Old Stables":
+            node.addlink("Berryfield", 2)
+            node.addlink("Kirkpatrick Theatre", 5)
+            node.addlink("Underwood", 8)
 
+        elif node.getNodeName() == "Berryfield":
+            node.addlink("Underwood", 10)
+            node.addlink("Kirkpatrick Theatre", 7)
+            node.addlink("Old Stables", 2)
 
-for node in twyc_map.getMap():
-    if node.getNodeName() == "Kirkpatrick Theatre":
-        node.addlink("Berryfield", 7)
-        node.addlink("Underwood", 3)
-        node.addlink("Old Stables", 5)
+        elif node.getNodeName() == "Underwood":
+            node.addlink("Berryfield", 10)
+            node.addlink("Kirkpatrick Theatre", 3)
+            node.addlink("Old Stables", 8)
 
-    elif node.getNodeName() == "Old Stables":
-        node.addlink("Berryfield", 2)
-        node.addlink("Kirkpatrick Theatre", 5)
-        node.addlink("Underwood", 8)
-
-    elif node.getNodeName() == "Berryfield":
-        node.addlink("Underwood", 10)
-        node.addlink("Kirkpatrick Theatre", 7)
-        node.addlink("Old Stables", 2)
-
-    elif node.getNodeName() == "Underwood":
-        node.addlink("Berryfield", 10)
-        node.addlink("Kirkpatrick Theatre", 3)
-        node.addlink("Old Stables", 8)
+    return twyc_map
 
 
 
@@ -245,7 +247,7 @@ def automatic(request):
                         
 
                         count = 0
-                        map = twyc_map
+                        map = buildMap()
 
                         while count < len(teachersOrder)-1:
 
