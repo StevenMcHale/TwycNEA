@@ -156,7 +156,7 @@ def automatic(request):
 
                         # Calculate Breaks and Distance                           
 
-                        distance = 0
+                        distance = 10
                         breaks = 0
                         teachersOrder = []
 
@@ -170,26 +170,27 @@ def automatic(request):
                                     teachersOrder.append(currentDict[timeslot])
 
 
+
                         # Put through graph
                         
 
-                        count = 0
+                        # count = 0
 
-                        while count < len(teachersOrder)-1:
+                        # while count < len(teachersOrder)-1:
 
-                            currentTeacher = Teacher.objects.get(name=teachersOrder[count])
-                            nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
+                        #     currentTeacher = Teacher.objects.get(name=teachersOrder[count])
+                        #     nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
 
-                            map = twyc_map
-                            currentNode = map.getNode(currentTeacher.building.name)
+                        #     map = twyc_map
+                        #     currentNode = map.getNode(currentTeacher.building.name)
 
-                            if currentTeacher.building != nextTeacher.building:
-                                nodeWeight = currentNode.getLinkWeight(nextTeacher.building.name)
-                            else:
-                                nodeWeight = 0
+                        #     if currentTeacher.building != nextTeacher.building:
+                        #         nodeWeight = currentNode.getLinkWeight(nextTeacher.building.name)
+                        #     else:
+                        #         nodeWeight = 0
 
-                            distance += nodeWeight
-                            count += 1
+                        #     distance += nodeWeight
+                        #     count += 1
 
                         currentDict['Breaks'] = breaks
                         currentDict['Distance'] = distance
@@ -394,7 +395,7 @@ def automatic(request):
 
                         # Calculate breaks and distance                           
 
-                        distance = 0
+                        distance = 10
                         breaks = 0
                         teachersOrder = []
 
@@ -410,23 +411,23 @@ def automatic(request):
                         # Put through graph
                         
 
-                        count = 0
+                        # count = 0
 
-                        while count < len(teachersOrder)-1:
+                        # while count < len(teachersOrder)-1:
 
-                            currentTeacher = Teacher.objects.get(name=teachersOrder[count])
-                            nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
+                        #     currentTeacher = Teacher.objects.get(name=teachersOrder[count])
+                        #     nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
 
-                            map = twyc_map
-                            currentNode = map.getNode(currentTeacher.building.name)
+                        #     map = twyc_map
+                        #     currentNode = map.getNode(currentTeacher.building.name)
 
-                            if currentTeacher.building != nextTeacher.building:
-                                nodeWeight = currentNode.getLinkWeight(nextTeacher.building.name)
-                            else:
-                                nodeWeight = 0
+                        #     if currentTeacher.building != nextTeacher.building:
+                        #         nodeWeight = currentNode.getLinkWeight(nextTeacher.building.name)
+                        #     else:
+                        #         nodeWeight = 0
 
-                            distance += nodeWeight
-                            count += 1
+                        #     distance += nodeWeight
+                        #     count += 1
 
                         currentDict['Breaks'] = breaks
                         currentDict['Distance'] = distance
