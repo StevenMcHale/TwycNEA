@@ -249,10 +249,16 @@ def automatic(request):
                         count = 0
                         map = buildMap()
 
+                        mapTeachers = []
+                        for teach in teachersOrder:
+                            for tea in allteachers:
+                                if tea.name == teach:
+                                    mapTeachers.append(tea)
+
                         while count < len(teachersOrder)-1:
 
-                            currentTeacher = Teacher.objects.get(name=teachersOrder[count])
-                            nextTeacher = Teacher.objects.get(name=teachersOrder[count+1])
+                            currentTeacher = mapTeachers[count]
+                            nextTeacher = mapTeachers[count+1]
 
                             
                             currentNode = map.getNode(currentTeacher.building.name)
