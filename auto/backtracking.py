@@ -49,4 +49,32 @@ def backtrack(sol, n, ans, av, pTimeslots):
                 backtrack(sol, n, ans, av, pTimeslots)
             sol.pop()
 
+
+def teacherBacktrackingFull(pAv, pTimeslots, pQueue):
+    n = len(pAv)
+    ans = []
+    sol = []
+
+    backtrack(sol, n, ans, pAv, pTimeslots, pQueue)
+
+    return ans
+
+def backtrack(sol, n, ans, av, pTimeslots, pQueue):
+
+    if len(ans) >= pQueue.getSpacesLeft():  # Check if we have enough results
+        return
     
+    
+    if len(sol) == n:
+        ans.append(sol[:])
+        return
+    
+    for teacher in av:
+        if teacher[0] not in sol:
+
+            sol.append(teacher[0])
+            index = sol.index(teacher[0]) + 1
+            if teacher[index] == 0:
+                backtrack(sol, n, ans, av, pTimeslots, pQueue)
+            sol.pop()
+

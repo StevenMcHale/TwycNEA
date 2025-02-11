@@ -305,7 +305,10 @@ def automatic(request):
 
                     # Backtrack once to get possible solutions
 
-                    result = teacherBacktracking(teachersAv, timeslotPattern)
+                    if solutionQueue.isEmpty():
+                        result = teacherBacktracking(teachersAv, timeslotPattern)
+                    else:
+                        result = teacherBacktrackingFull(teachersAv, timeslotPattern, solutionQueue)
 
 
                     # Add those solutions to a queue

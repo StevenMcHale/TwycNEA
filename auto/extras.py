@@ -31,6 +31,9 @@ class DynamicQueue(object):
     
     def getQueueLength(self):
         return len(self.__items)
+    
+    def getSpacesLeft(self):
+        return self.__max - len(self.__items)
 
 
 
