@@ -107,7 +107,11 @@ def teachersAvailability(pTeachers, pTimeslots, pDate, pStudent):
                 if booking.student.name == pStudent.name:
                     teacherList.append(pStudent.name)
                 else:
-                    teacherList.append(1)
+                    if booking.student.name == 'UCAS':
+                        teacherList.append(booking.student.name)
+                    else:
+                        teacherList.append(1)
+                    
         teachersAv.append(teacherList)
     
     return teachersAv

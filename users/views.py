@@ -213,11 +213,22 @@ def userTeacherBookings(request):
     teacher = request.user.teacher
     bookings = teacher.booking_set.all()
     total_bookings = bookings.count()
+    student = Student.objects.get(name='UCAS')
+    ucas_bookings = bookings.filter(student=student)
+    ucas_sorted = sortBookings(ucas_bookings)
 
+    final_ucas = []
     finalBookings = sortBookings(bookings)
+    for booking in finalBookings:
+        if booking.student.name != 'UCAS':
+            final_ucas.append(booking)
+    final_ucas.append(ucas_sorted[0])
+    final_ucas = sortBookings(final_ucas)
 
 
-    context = {'teacher':teacher, 'bookings':finalBookings, 'total_bookings':total_bookings}
+
+
+    context = {'teacher':teacher, 'bookings':final_ucas, 'total_bookings':total_bookings}
     return render(request, 'users/userTeacherBookings.html', context)
 
 
