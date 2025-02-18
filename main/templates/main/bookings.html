@@ -41,6 +41,9 @@
 			<div class="card card-body">
 				<h5>Bookings</h5>
 			</div>
+			<a href="{% url 'bookUCAS' %}" class="btn btn-primary" style="position: absolute; top: 10px; right: 10px;">
+				Book UCAS
+			</a>
 			<div class="card card-body" style="height: 300px; overflow-y: auto;">
 				{% if request.user.is_staff %}
 					<a class="btn btn-primary btn-sm btn-block" href="{% url 'create_booking' %}">Create Booking</a>

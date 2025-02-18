@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from .models import *
 from .filters import BookingFilter
@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from users.decorators import unauthenticated_user, allowed_users
 from manual.extras import *
 from auto.extras import *
+import datetime
 
 # Create your views here.
 
@@ -216,3 +217,59 @@ def map(request):
     context = {}
 
     return render(request, 'main/map.html', context)
+
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def bookUCAS(request):
+
+    teachers = Teacher.objects.all()
+    timeslots = Timeslot.objects.all()
+    timeslots = sortTimeslots(timeslots)
+
+    date = EveningDate.objects.get(year_group='LVI')
+    student = Student.objects.get(name='UCAS')
+
+    if request.method == 'POST':
+        teacher = request.POST.get('teacher')
+        timeslotHTML = request.POST.get('timeslot')
+
+        teacher = Teacher.objects.get(name=teacher)
+
+
+
+        if timeslotHTML == 'timeslot1':
+            for timeslot in timeslots:
+                if timeslot.start_time >= datetime.time(16,0,0) and timeslot.start_time < datetime.time(17,0,0):
+
+                    Booking.objects.create(
+                            student=student,
+                            teacher=teacher,
+                            timeslot=timeslot,
+                            status='Pending',
+                            date=date,
+                        )
+
+
+        elif timeslotHTML == 'timeslot2':
+            for timeslot in timeslots:
+                if timeslot.start_time >= datetime.time(18,0,0) and timeslot.start_time < datetime.time(19,0,0):
+
+                    Booking.objects.create(
+                            student=student,
+                            teacher=teacher,
+                            timeslot=timeslot,
+                            status='Pending',
+                            date=date,
+                        )
+        
+
+        return redirect('bookings')
+
+
+    
+
+    context = {'teachers':teachers}
+    return render(request, 'main/bookUCAS.html', context)

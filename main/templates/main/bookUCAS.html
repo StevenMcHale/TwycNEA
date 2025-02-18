@@ -1,0 +1,40 @@
+{% extends 'main/main.html' %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-3">
+		<div class="card card-body">
+
+            <h3>Book UCAS slots for teacher:</h3>
+
+            <form method="POST" action="">
+                {% csrf_token %}
+                
+                <h5>Teacher:</h5>
+                <select id="teacher" name="teacher" class="form-control">
+                    {% for teacher in teachers %}
+                        <option name="teacher" value="{{ teacher }}">{{teacher.name}}</option>
+                    {% endfor %}
+                </select>
+
+                <h5>Timeslot:</h5>
+                <select id="timeslot" name="timeslot" class="form-control">
+                    <option name="timeslot" value="timeslot1">16:00 - 17:00</option>
+                    <option name="timeslot" value="timeslot2">18:00 - 19:00</option>
+                </select>
+                
+
+                <br> 
+                <input class="btn btn-sm btn-success" type="submit" name="Submit">
+            </form>
+
+            
+        </div>
+    </div>
+</div>
+
+{% endblock %}
