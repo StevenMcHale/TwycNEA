@@ -316,8 +316,21 @@ def generate_bookings_pdf_teachers(request):
     y_offset -= 20
 
     bookings = Booking.objects.filter(teacher=request.user.teacher)  # Assuming teacher is logged in
-    bookings = sortBookings(bookings)
-    for booking in bookings:
+    
+    student = Student.objects.get(name='UCAS')
+    ucas_bookings = request.user.teacher.booking_set.filter(student=student)
+    ucas_sorted = sortBookings(ucas_bookings)
+
+    final_ucas = []
+    finalBookings = sortBookings(bookings)
+    for booking in finalBookings:
+        if booking.student.name != 'UCAS':
+            final_ucas.append(booking)
+    final_ucas.append(ucas_sorted[0])
+    final_ucas = sortBookings(final_ucas)
+
+
+    for booking in final_ucas:
         subjects = ", ".join(
             [subject.name for subject in booking.teacher.subjects.all() if subject in booking.student.subjects.all()]
         )
