@@ -7,6 +7,9 @@ from users.decorators import unauthenticated_user, allowed_users
 from manual.extras import *
 from auto.extras import *
 import datetime
+import pandas as pd
+import random
+from django.contrib.auth.models import Group
 
 # Create your views here.
 
@@ -273,3 +276,85 @@ def bookUCAS(request):
 
     context = {'teachers':teachers}
     return render(request, 'main/bookUCAS.html', context)
+
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def loadTeachers(request):
+
+    if request.method == 'POST':
+        
+       
+        
+        sheet_id = '16Q8TzEyA8r7QwAZeZ5bGUDKahectpsNQbyPkIOg78J4'
+
+        df = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
+
+        records = []
+
+        for _, row in df.iterrows():
+            teacher_name = row[0]  # First column contains the username
+            teacher_code = row[1]
+            teacher_email = row[2]
+            teacher_building = row[3]
+            teacher_room = row[4]
+            subjects = row[5:].dropna().tolist()  # Columns for subjects (Option1 to Option4)
+            
+            # Append to the list in the format [username, [subjects], [teachers]]
+            records.append([teacher_name, teacher_code, teacher_email, teacher_building, teacher_room, subjects])
+
+        
+
+        for record in records:
+            name = record[0]
+            email = record[2] + "@twycrosshouseschool.org.uk"
+
+            number = random.randint(1000, 9999)
+            password = 'twyc' + str(number)
+
+            username = "staff_" + record[1]
+
+            User.objects.create(
+                username=username,
+                email=email,
+                password=password,
+            )
+
+            user = User.objects.get(username=username)
+
+            group = Group.objects.get(name='teacher')
+            user.groups.add(group)
+
+            newSubjects = []
+
+            for sub in record[5]:
+                newSubject = Subject.objects.get(name=sub)
+                newSubjects.append(newSubject)
+
+            building = record[3]
+            building = Building.objects.get(name=building)
+            room = record[4]
+            room = Room.objects.get(name=room)
+
+
+            
+            Teacher.objects.create(
+                user=user,
+                name=name,
+                email=email,
+                building=building,
+                room=room,
+            )
+
+            tea = Teacher.objects.get(name=name)
+            tea.subjects.set(newSubjects)
+
+
+
+        return redirect('dashboard')
+
+
+    context = {}
+    return render(request, 'main/loadTeachers.html', context)

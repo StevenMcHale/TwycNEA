@@ -17,4 +17,5 @@ urlpatterns = [
     path('parent/<str:pk>/', views.parent, name="parent"),
     path('map/', views.map, name="map"),
     path('bookUCAS/', views.bookUCAS, name="bookUCAS"),
+    path('loadTeachers/', views.loadTeachers, name="loadTeachers"),
 ]
