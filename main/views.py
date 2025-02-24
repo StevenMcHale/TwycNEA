@@ -447,6 +447,7 @@ def emailStudent(request, pk):
     student = Student.objects.get(id=pk)
     username = student.user.username
     password = student.user.password
+    email = student.email
 
     if request.method == 'POST':
 
@@ -454,7 +455,7 @@ def emailStudent(request, pk):
             "Parents' Evening",
             f"Username: {username}, Password: {password}",
             "twycrossbooking@gmail.com",
-            [f"{username}@twycrosshouseschool.org.uk"],
+            [f"{email}"],
             fail_silently=False,
         )
 
@@ -473,6 +474,7 @@ def emailTeacher(request, pk):
     teacher = Teacher.objects.get(id=pk)
     username = teacher.user.username
     password = teacher.user.password
+    email = teacher.email
 
     if request.method == 'POST':
 
@@ -480,7 +482,7 @@ def emailTeacher(request, pk):
             "Parents' Evening",
             f"Username: {username}, Password: {password}",
             "twycrossbooking@gmail.com",
-            [f"{username}@twycrosshouseschool.org.uk"],
+            [f"{email}"],
             fail_silently=False,
         )
 
@@ -503,6 +505,7 @@ def emailAllStudents(request):
         for student in students:
             username = student.user.username
             password = student.user.password
+            email = student.email
 
             if request.method == 'POST':
 
@@ -510,7 +513,7 @@ def emailAllStudents(request):
                     "Parents' Evening",
                     f"Username: {username}, Password: {password}",
                     "twycrossbooking@gmail.com",
-                    [f"{username}@twycrosshouseschool.org.uk"],
+                    [f"{email}"],
                     fail_silently=False,
                 )
 
