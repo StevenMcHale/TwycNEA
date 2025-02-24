@@ -497,7 +497,7 @@ def emailTeacher(request, pk):
 @allowed_users(allowed_roles=['admin'])
 def emailAllStudents(request):
 
-    students = Student.objects.all()
+    students = Student.objects.filter(year_group="LVI")
 
     if request.method == 'POST':
 
