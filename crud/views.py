@@ -22,10 +22,9 @@ def changeTeacherPass(request, pk):
 
             teacher = Teacher.objects.get(id=pk)
 
-            user = teacher.user
-            user.password = newPassword
+            teacher.user.update(password=newPassword)
             
-            user.save()
+            
             return redirect('dashboard')
 
         context = {}
