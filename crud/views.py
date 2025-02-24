@@ -20,10 +20,11 @@ def changeTeacherPass(request, pk):
         if request.method == 'POST':
             newPassword = request.POST.get('password')
 
-            uname = Teacher.objects.get(id=pk).user.username
+            teacher = Teacher.objects.get(id=pk)
 
-            user = User.objects.get(username=uname)
-            user.set_password(newPassword)
+            user = teacher.user
+            user.password = newPassword
+            
             user.save()
             return redirect('dashboard')
 
