@@ -22,4 +22,5 @@ urlpatterns = [
     path('emailStudent/<str:pk>/', views.emailStudent, name="emailStudent"),
     path('emailTeacher/<str:pk>/', views.emailTeacher, name="emailTeacher"),
     path('emailAllStudents/', views.emailAllStudents, name="emailAllStudents"),
+    path('emailAllTeachers/', views.emailAllTeachers, name="emailAllTeachers"),
 ]
