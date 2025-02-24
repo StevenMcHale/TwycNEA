@@ -17,6 +17,7 @@
 			<p>Total Bookings: {{total_bookings}}</p>
 			<p>Password: {{teacher.user.password}}</p>
 			<a href="{% url 'change_pass_t' teacher.id %}">Change Pasword</a>
+			<a href="{% url 'emailTeacher' teacher.id %}">Email</a>
 
 		</div>
 	</div>

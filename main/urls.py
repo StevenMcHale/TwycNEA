@@ -20,4 +20,5 @@ urlpatterns = [
     path('loadTeachers/', views.loadTeachers, name="loadTeachers"),
     path('loadLVIStudents/', views.loadLVIStudents, name="loadLVI"),
     path('emailStudent/<str:pk>/', views.emailStudent, name="emailStudent"),
+    path('emailTeacher/<str:pk>/', views.emailTeacher, name="emailTeacher"),
 ]
