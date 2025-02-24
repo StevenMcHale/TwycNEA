@@ -23,6 +23,8 @@ def changeTeacherPass(request, pk):
             teacher = Teacher.objects.get(id=pk)
 
             teacher.user.update(password=newPassword)
+
+            teacher.user.save()
             
             
             return redirect('dashboard')
