@@ -49,11 +49,14 @@ def changeStudentPass(request, pk):
         if request.method == 'POST':
             newPassword = request.POST.get('password')
 
-            uname = Student.objects.get(id=pk).user.username
+            student = Student.objects.get(id=pk)
 
-            user = User.objects.get(username=uname)
-            user.set_password(newPassword)
+            user = student.user
+
+            user.password = newPassword
+
             user.save()
+
             return redirect('dashboard')
 
         context = {}
