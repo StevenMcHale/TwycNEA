@@ -15,7 +15,7 @@
 			<p>Room: {{teacher.room}}</p>
             <p>Building: {{teacher.building}}</p>
 			<p>Total Bookings: {{total_bookings}}</p>
-			<p>Password: {{user.password}}</p>
+			<p>Password: {{teacher.user.password}}</p>
 			<a href="{% url 'change_pass_t' teacher.id %}">Change Pasword</a>
 
 		</div>

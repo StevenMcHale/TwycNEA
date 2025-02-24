@@ -14,7 +14,7 @@
 			<p>Email: {{student.email}}</p>
 			<p>Year Group: {{student.year_group}}</p>
 			<p>Total Bookings: {{total_bookings}}</p>
-			<p>Password: {{user.password}}</p>
+			<p>Password: {{student.user.password}}</p>
 			<a href="{% url 'change_pass_s' student.id %}">Change Pasword</a>
 
 		</div>
