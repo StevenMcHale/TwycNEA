@@ -38,7 +38,7 @@
         display: none;
     }
 
-    body:not(:has(:target)) #uvi-students {
+    body:not(:has(:target)) #lvi-students {
         display: block;
     }
 
@@ -159,6 +159,7 @@
         <hr>
         <div class="card card-body" style="height: 500px; overflow-y: auto;">
             <a class="btn btn-primary btn-sm btn-block" href="{% url 'registerTeacher' %}">Create Teacher</a>
+            <a class="btn btn-primary btn-sm btn-block" href="{% url 'loadTeachers' %}" style="margin-top: 10px;">Load Teachers</a>
             <table class="table table-sm">
                 <tr>
                     
