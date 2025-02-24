@@ -113,13 +113,23 @@ def loginPage(request):
         username = request.POST.get('username')
         password = request.POST.get('password')
 
-        user = authenticate(request, username=username, password=password)
+        try:
 
-        if user is not None:
+            user = User.objects.get(username=username, password=password)
             login(request, user)
             return redirect('dashboard')
-        else:
-            messages.info(request, 'Username or password is incorrect')
+
+
+            
+        except:
+
+            try:
+                user = authenticate(request, username=username, password=password)
+                login(request, user)
+                return redirect('dashboard')
+            
+            except:
+                messages.info(request, 'Username or password is incorrect')
 
     context = {}
     return render(request, 'users/login.html', context)
