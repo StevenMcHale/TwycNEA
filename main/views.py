@@ -358,3 +358,81 @@ def loadTeachers(request):
 
     context = {}
     return render(request, 'main/loadTeachers.html', context)
+
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def loadLVIStudents(request):
+
+    if request.method == 'POST':
+        
+        sheet_id = '1Cr3gfKAN9ShjgyzMeCdF3qEMMGhFyt6GCQQeN_II2Ms'
+
+        df = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
+
+        records = []
+
+        for _, row in df.iterrows():
+            student_name = row[0]  # First column contains the username
+            subjects = row[1:5].dropna().tolist()  # Columns for subjects (Option1 to Option4)
+            teachers = row[5:].dropna().tolist()  # Columns for teachers (Teacher1 to Teacher8)
+            
+            # Append to the list in the format [username, [subjects], [teachers]]
+            records.append([student_name, subjects, teachers])
+
+        
+
+        for record in records:
+            username = record[0]
+            email = username + "@twycrosshouseschool.org.uk"
+            level = 'LVI'
+
+            number = random.randint(1000, 9999)
+            password = 'twyc' + str(number)
+
+            User.objects.create(
+                username=username,
+                email=email,
+                password=password,
+            )
+
+            user = User.objects.get(username=username)
+
+            group = Group.objects.get(name='student')
+            user.groups.add(group)
+
+            newSubjects = []
+
+            for sub in record[1]:
+                newSubject = Subject.objects.get(name=sub)
+                newSubjects.append(newSubject)
+
+            newTeachers = []
+            
+            for code in record[2]:
+                tUsername = 'staff_' + code
+                tUser = User.objects.get(username=tUsername)
+                newTeacher = Teacher.objects.get(user=tUser)
+                newTeachers.append(newTeacher)
+
+            
+            Student.objects.create(
+                user=user,
+                name=username,
+                email=email,
+                year_group=level,
+            )
+
+            stu = Student.objects.get(name=username)
+            stu.subjects.set(newSubjects)
+            stu.teachers.set(newTeachers)
+
+
+
+        return redirect('dashboard')
+
+
+    context = {}
+    return render(request, 'main/loadLVI.html', context)

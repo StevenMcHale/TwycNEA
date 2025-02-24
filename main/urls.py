@@ -18,4 +18,5 @@ urlpatterns = [
     path('map/', views.map, name="map"),
     path('bookUCAS/', views.bookUCAS, name="bookUCAS"),
     path('loadTeachers/', views.loadTeachers, name="loadTeachers"),
+    path('loadLVIStudents/', views.loadLVIStudents, name="loadLVI"),
 ]
