@@ -232,7 +232,8 @@ def userTeacherBookings(request):
     for booking in finalBookings:
         if booking.student.name != 'UCAS':
             final_ucas.append(booking)
-    final_ucas.append(ucas_sorted[0])
+    if len(ucas_sorted) != 0:
+        final_ucas.append(ucas_sorted[0])
     final_ucas = sortBookings(final_ucas)
 
 
