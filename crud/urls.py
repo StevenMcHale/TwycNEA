@@ -7,6 +7,7 @@ urlpatterns = [
     path('change_pass_s/<str:pk>/', views.changeStudentPass, name="change_pass_s"),
 
     path('delete_all_uvi/', views.deleteAll, name="delete_all_uvi"),
+    path('delete_all_teachers/', views.deleteAllTeachers, name="delete_all_teachers"),
     path('convert_all_lvi/', views.convertAll, name="convert_all_lvi"),
 
     path('create_parent/', views.createParent, name="create_parent"),

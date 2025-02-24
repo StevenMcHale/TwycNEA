@@ -84,6 +84,25 @@ def deleteAll(request):
     return render(request, 'crud/delete_all_UVI.html', context)
 
 
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def deleteAllTeachers(request):
+
+    teachers = Teacher.objects.all()
+
+    if request.method == "POST":
+        for teacher in teachers:
+            teacher.delete()
+        return redirect('dashboard')
+
+
+    context = {}
+    return render(request, 'crud/delete_all_teachers.html', context)
+
+
+
+
 @login_required(login_url='login')
 @allowed_users(allowed_roles=['admin'])
 def convertAll(request):
