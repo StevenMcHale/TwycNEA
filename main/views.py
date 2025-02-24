@@ -489,3 +489,33 @@ def emailTeacher(request, pk):
 
     context = {'teacher':teacher}
     return render(request, 'main/emailTeacher.html', context)
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def emailAllStudents(request):
+
+    students = Student.objects.all()
+
+    if request.method == 'POST':
+
+        for student in students:
+            username = student.user.username
+            password = student.user.password
+
+            if request.method == 'POST':
+
+                send_mail(
+                    "Parents' Evening",
+                    f"Username: {username}, Password: {password}",
+                    "twycrossbooking@gmail.com",
+                    [f"{username}@twycrosshouseschool.org.uk"],
+                    fail_silently=False,
+                )
+
+        return redirect('dashboard')
+
+
+    context = {}
+    return render(request, 'main/emailAllStudents.html', context)
