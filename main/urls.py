@@ -19,4 +19,5 @@ urlpatterns = [
     path('bookUCAS/', views.bookUCAS, name="bookUCAS"),
     path('loadTeachers/', views.loadTeachers, name="loadTeachers"),
     path('loadLVIStudents/', views.loadLVIStudents, name="loadLVI"),
+    path('emailStudent/<str:pk>/', views.emailStudent, name="emailStudent"),
 ]

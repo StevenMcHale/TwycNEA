@@ -10,6 +10,7 @@ import datetime
 import pandas as pd
 import random
 from django.contrib.auth.models import Group
+from django.core.mail import send_mail
 
 # Create your views here.
 
@@ -436,3 +437,29 @@ def loadLVIStudents(request):
 
     context = {}
     return render(request, 'main/loadLVI.html', context)
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def emailStudent(request, pk):
+
+    student = Student.objects.get(id=pk)
+    username = student.user.username
+    password = student.user.password
+
+    if request.method == 'POST':
+
+        send_mail(
+            "Parents' Evening",
+            f"Username: {username}, Password: {password}",
+            "twycrossbooking@gmail.com",
+            [f"{username}@twycrosshouseschool.org.uk"],
+            fail_silently=False,
+        )
+
+        return redirect('dashboard')
+
+
+    context = {'student':student}
+    return render(request, 'main/emailStudent.html', context)
