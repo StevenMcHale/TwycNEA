@@ -367,8 +367,9 @@ def loadTeachers(request):
 def loadLVIStudents(request):
 
     if request.method == 'POST':
+
         
-        sheet_id = '1Cr3gfKAN9ShjgyzMeCdF3qEMMGhFyt6GCQQeN_II2Ms'
+        sheet_id = '1EUuN4AYEq-a0VQdZdu5sXpY19vEx2ckSHlnAn7tBsno'
 
         df = pd.read_csv(f"https://docs.google.com/spreadsheets/d/{sheet_id}/export?format=csv")
 
