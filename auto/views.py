@@ -27,11 +27,7 @@ def automatic(request):
     date = EveningDate.objects.get(year_group=student.year_group)
     timeslots =  date.timeslots.all()
     timeslots = sortTimeslots(timeslots)
-    no = 0
-    first_time = 0
-    second_time = 0
-    third_time = 0
-    fourth_time = 0
+    
 
     if request.method == 'POST':
         start_time = request.POST.get('start_time')
@@ -73,7 +69,7 @@ def automatic(request):
 
 
 
-            start_time = time.time()
+            
 
             if teachersLeft == len(userTimeslots):
 
@@ -120,7 +116,7 @@ def automatic(request):
                         break
                 
                 
-                first_time = time.time() - start_time
+                
 
                 if solutionQueue.getQueueLength() != 0:
 
@@ -205,14 +201,14 @@ def automatic(request):
 
                         finalSolutions.append(currentDict)
 
-                    second_time = time.time() - start_time
+                    
 
 
                     # Sort solutions on breaks or distance
 
 
                     finalSolutions = bubbleSortBreaks(finalSolutions)
-                    no = len(finalSolutions)
+                    
 
                     
                     # Put solutions in stack get pop (best solution)
@@ -248,7 +244,7 @@ def automatic(request):
                     else:
                         optimalBreakSolution = solutionStack.pop()
 
-                    third_time = time.time() - start_time
+                    
 
 
                     # Remove curremt bookings and empty bookings
@@ -277,8 +273,8 @@ def automatic(request):
                                 )
 
 
-                    fourth_time = time.time() - start_time
-                    #return redirect('userStudentBookings')
+                    
+                    return redirect('userStudentBookings')
                 
                 else:
                     messages.info(request, 'There are no solutions')
@@ -364,7 +360,7 @@ def automatic(request):
                             break
 
 
-                first_time = time.time() - start_time
+                
 
                 if solutionQueue.getQueueLength() != 0:
 
@@ -449,13 +445,13 @@ def automatic(request):
 
                         finalSolutions.append(currentDict)
 
-                    second_time = time.time() - start_time
+                    
 
                     # Sort solutions on breaks or distance
                     
 
                     finalSolutions = bubbleSortBreaks(finalSolutions)
-                    no = len(finalSolutions)
+                    
 
 
                     # Put solutions in a stack
@@ -489,7 +485,7 @@ def automatic(request):
                     else:
                         optimalBreakSolution = solutionStack.pop()
 
-                    third_time = time.time() - start_time
+                    
 
 
                     # Remove current bookings and empty bookings
@@ -516,8 +512,8 @@ def automatic(request):
                                     date=date,
                                 )
 
-                    fourth_time = time.time() - start_time
-                    #return redirect('userStudentBookings')
+                    
+                    return redirect('userStudentBookings')
 
                 
                 else:
@@ -542,5 +538,5 @@ def automatic(request):
 
     
 
-    context = {'timeslots':timeslots, 'no':no, 'first_time':first_time, 'second_time':second_time, 'third_time':third_time, 'fourth_time':fourth_time}
+    context = {'timeslots':timeslots}
     return render(request, 'auto/auto.html', context)
