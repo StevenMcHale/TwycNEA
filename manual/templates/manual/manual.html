@@ -11,21 +11,14 @@
 
             <h3>Create Booking</h3>
 
-            <form method="POST" action="">
+            <form method="POST" action="" onsubmit="openLoader()">
                 {% csrf_token %}
                 {{form|crispy}}
 
 
                 <br>
-                {% if request.session.form_submitted %}
-                    <!-- Disable the button when form is submitted -->
-                    <button class="btn btn-sm btn-success" type="submit" disabled>Processing...</button>
-                {% else %}
-                    <!-- Enable the button when form is not submitted -->
-                    <button class="btn btn-sm btn-success" type="submit" name="Submit">Submit</button>
-                {% endif %}
 
-                <!--<input class="btn btn-sm btn-success" type="submit" name="Submit">-->
+                <input id="submitButton" class="btn btn-sm btn-success" type="submit" name="Submit">
             </form>
 
             {% for message in messages %}
@@ -78,4 +71,15 @@
 
 </div>
 
+
+<script>
+    function openLoader() {
+        // Find the submit button
+        const submitButton = document.getElementById("submitButton");
+        
+        // Disable the button and change its appearance
+        submitButton.disabled = true;
+        submitButton.value = "Processing...";
+    }
+    </script>
 {% endblock %}
