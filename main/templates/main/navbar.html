@@ -63,9 +63,7 @@
         <li class="nav-item">
           <a class="nav-link" href="{% url 'userStudentBookings' %}" style="color: #ffcc00;">Your Bookings</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'map' %}" style="color: #ffcc00;">Map</a>
-        </li>
+        
 
 
         {% elif request.user.groups.all.0.name == "teacher" %}

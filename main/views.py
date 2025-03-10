@@ -213,15 +213,6 @@ def parent(request, pk):
 
 
 
-@login_required(login_url='login')
-@allowed_users(allowed_roles=['student'])
-def map(request):
-
-
-    context = {}
-
-    return render(request, 'main/map.html', context)
-
 
 
 

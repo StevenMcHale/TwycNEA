@@ -15,7 +15,6 @@ urlpatterns = [
     path('sheetLVI/', views.spreadsheetLVI, name="sheetLVI"),
     path('sheetUVI/', views.spreadsheetUVI, name="sheetUVI"),
     path('parent/<str:pk>/', views.parent, name="parent"),
-    path('map/', views.map, name="map"),
     path('bookUCAS/', views.bookUCAS, name="bookUCAS"),
     path('loadTeachers/', views.loadTeachers, name="loadTeachers"),
     path('loadLVIStudents/', views.loadLVIStudents, name="loadLVI"),
