@@ -439,12 +439,13 @@ def emailStudent(request, pk):
     username = student.user.username
     password = student.user.password
     email = student.email
+    link = "https://twyc-nea.vercel.app/login"
 
     if request.method == 'POST':
 
         send_mail(
             "Parents' Evening",
-            f"Username: {username}, Password: {password}",
+            f"Link to login page: {link}, Username: {username}, Password: {password}",
             "twycrossbooking@gmail.com",
             [f"{email}"],
             fail_silently=False,
@@ -466,12 +467,13 @@ def emailTeacher(request, pk):
     username = teacher.user.username
     password = teacher.user.password
     email = teacher.email
+    link = "https://twyc-nea.vercel.app/login"
 
     if request.method == 'POST':
 
         send_mail(
             "Parents' Evening",
-            f"Username: {username}, Password: {password}",
+            f"Link to login page: {link}, Username: {username}, Password: {password}",
             "twycrossbooking@gmail.com",
             [f"{email}"],
             fail_silently=False,
@@ -490,6 +492,7 @@ def emailTeacher(request, pk):
 def emailAllStudents(request):
 
     students = Student.objects.filter(year_group="LVI")
+    link = "https://twyc-nea.vercel.app/login"
 
     if request.method == 'POST':
 
@@ -502,7 +505,7 @@ def emailAllStudents(request):
 
                 send_mail(
                     "Parents' Evening",
-                    f"Username: {username}, Password: {password}",
+                    f"Link to login page: {link}, Username: {username}, Password: {password}",
                     "twycrossbooking@gmail.com",
                     [f"{email}"],
                     fail_silently=False,
@@ -521,6 +524,7 @@ def emailAllStudents(request):
 def emailAllTeachers(request):
 
     teachers = Teacher.objects.all()
+    link = "https://twyc-nea.vercel.app/login"
 
     if request.method == 'POST':
 
@@ -533,7 +537,7 @@ def emailAllTeachers(request):
 
                 send_mail(
                     "Parents' Evening",
-                    f"Username: {username}, Password: {password}",
+                    f"Link to login page: {link}, Username: {username}, Password: {password}",
                     "twycrossbooking@gmail.com",
                     [f"{email}"],
                     fail_silently=False,
