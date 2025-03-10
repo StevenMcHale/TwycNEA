@@ -13,11 +13,6 @@
             <form method="POST" action="" onsubmit="openLoader()">
                 {% csrf_token %}
 
-                <h5>{{no}}</h5>
-                <h5>{{first_time}}</h5>
-                <h5>{{second_time}}</h5>
-                <h5>{{third_time}}</h5>
-                <h5>{{fourth_time}}</h5>
                 
                 <h5>Start Time:</h5>
                 <select id="start_time" name="start_time" class="form-control">
@@ -43,6 +38,19 @@
             {% for message in messages %}
                 <p>{{ message }}</p>
             {% endfor %}
+        </div>
+    </div>
+
+    <div class="col-md-7">
+		<div class="card card-body" style="width: 1000px; height: 300px; overflow-y: auto; overflow-x: auto;">
+            <h3>Step by Step Guide</h3>
+            <hr>
+            <p>1. Select the time you want your first appointment to start at (Start Time)</p>
+            <p>2. Select the time you want your final appointment to end at (End Time)</p>
+            <p>3. Click submit</p>
+            <p>4. All of your appointments will be booked and you will be redirected to the 'Your Bookings' page</p>
+            
+
         </div>
     </div>
 </div>
