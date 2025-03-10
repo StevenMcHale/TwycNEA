@@ -13,6 +13,8 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from io import BytesIO
+from django.templatetags.static import static
+import os
 
 # Create your views here.
 
@@ -290,6 +292,18 @@ def generate_bookings_pdf_students(request):
             p.drawString(x_offset + i * 100, y_offset, text)
 
         y_offset -= 20
+
+
+    # Move to second page
+    p.showPage()
+
+    # Path to the image in static folder
+
+    image_path = os.path.join(os.path.dirname(__file__), "..", "static", "images", "LVImap.png")
+
+    # Add image to second page
+    if os.path.exists(image_path):
+        p.drawImage(image_path, 100, height / 2, width=500, height=400)  # Adjust position and size
 
     # Save PDF to buffer
     p.showPage()
