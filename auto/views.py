@@ -33,7 +33,7 @@ def automatic(request):
         start_time = request.POST.get('start_time')
         end_time = request.POST.get('end_time')
 
-        if start_time >= end_time:
+        if start_time > end_time:
             messages.info(request, 'Invalid Input')
         else:
 
