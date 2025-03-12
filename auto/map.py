@@ -51,21 +51,31 @@ for node in twyc_map.getMap():
         node.addlink("Berryfield", 7)
         node.addlink("Underwood", 3)
         node.addlink("Old Stables", 5)
+        node.addlink("Swallows Hill", 3)
 
     elif node.getNodeName() == "Old Stables":
         node.addlink("Berryfield", 2)
         node.addlink("Kirkpatrick Theatre", 5)
         node.addlink("Underwood", 8)
+        node.addlink("Swallows Hill", 8)
 
     elif node.getNodeName() == "Berryfield":
         node.addlink("Underwood", 10)
         node.addlink("Kirkpatrick Theatre", 7)
         node.addlink("Old Stables", 2)
+        node.addlink("Swallows Hill", 10)
 
     elif node.getNodeName() == "Underwood":
         node.addlink("Berryfield", 10)
         node.addlink("Kirkpatrick Theatre", 3)
         node.addlink("Old Stables", 8)
+        node.addlink("Swallows Hill", 1)
+    
+    elif node.getNodeName() == "Swallows Hill":
+        node.addlink("Berryfield", 10)
+        node.addlink("Kirkpatrick Theatre", 3)
+        node.addlink("Old Stables", 8)
+        node.addlink("Underwood", 1)
 
 
 
