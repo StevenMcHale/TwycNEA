@@ -11,6 +11,12 @@ import pandas as pd
 import random
 from django.contrib.auth.models import Group
 from django.core.mail import send_mail
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from io import BytesIO
+from django.templatetags.static import static
+import os
 
 # Create your views here.
 
@@ -548,3 +554,79 @@ def emailAllTeachers(request):
 
     context = {}
     return render(request, 'main/emailAllTeachers.html', context)
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def printTeacherBookings(request):
+
+    # Create a buffer to hold the PDF
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    # Title
+    p.setFont("Helvetica-Bold", 16)
+    p.drawString(200, height - 50, "Teacher's Bookings Summary")
+
+    # Table Headers
+    p.setFont("Helvetica-Bold", 12)
+    headers = ["Start Time", "Student", "Subject", "Date", "Status"]
+    x_offset = 50
+    y_offset = height - 100
+
+    for i, header in enumerate(headers):
+        p.drawString(x_offset + i * 100, y_offset, header)
+
+    # Table Data
+    p.setFont("Helvetica", 10)
+    y_offset -= 20
+
+    teachers = Teacher.objects.all()
+
+    for teacher in teachers:
+
+        bookings = Booking.objects.filter(teacher=teacher)  # Assuming teacher is logged in
+        
+        student = Student.objects.get(name='UCAS')
+        ucas_bookings = request.user.teacher.booking_set.filter(student=student)
+        ucas_sorted = sortBookings(ucas_bookings)
+
+        final_ucas = []
+        finalBookings = sortBookings(bookings)
+        for booking in finalBookings:
+            if booking.student.name != 'UCAS':
+                final_ucas.append(booking)
+        if len(ucas_sorted) != 0:
+            final_ucas.append(ucas_sorted[0])
+        final_ucas = sortBookings(final_ucas)
+
+
+        for booking in final_ucas:
+            subjects = ", ".join(
+                [subject.name for subject in booking.teacher.subjects.all() if subject in booking.student.subjects.all()]
+            )
+            
+            data = [
+                booking.timeslot.start_time.strftime("%H:%M"),
+                booking.student.name,
+                subjects,
+                booking.date.date.strftime("%Y-%m-%d"),
+                booking.status
+            ]
+
+            for i, text in enumerate(data):
+                p.drawString(x_offset + i * 100, y_offset, text)
+
+            y_offset -= 20
+
+        p.showPage()
+
+    # Save PDF to buffer
+    p.showPage()
+    p.save()
+
+    # Send PDF response
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type="application/pdf")
