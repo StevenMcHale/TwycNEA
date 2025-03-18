@@ -566,26 +566,30 @@ def printTeacherBookings(request):
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
-    # Title
-    p.setFont("Helvetica-Bold", 16)
-    p.drawString(200, height - 50, "Teacher's Bookings Summary")
-
-    # Table Headers
-    p.setFont("Helvetica-Bold", 12)
-    headers = ["Start Time", "Student", "Subject", "Date", "Status"]
-    x_offset = 50
-    y_offset = height - 100
-
-    for i, header in enumerate(headers):
-        p.drawString(x_offset + i * 100, y_offset, header)
-
-    # Table Data
-    p.setFont("Helvetica", 10)
-    y_offset -= 20
-
     teachers = Teacher.objects.all()
 
     for teacher in teachers:
+
+        name = teacher.name
+
+        # Title
+        p.setFont("Helvetica-Bold", 16)
+        p.drawString(200, height - 50, f"{name}'s Bookings Summary")
+
+        # Table Headers
+        p.setFont("Helvetica-Bold", 12)
+        headers = ["Start Time", "Student", "Subject", "Date", "Status"]
+        x_offset = 50
+        y_offset = height - 100
+
+        for i, header in enumerate(headers):
+            p.drawString(x_offset + i * 100, y_offset, header)
+
+        # Table Data
+        p.setFont("Helvetica", 10)
+        y_offset -= 20
+
+
 
         bookings = Booking.objects.filter(teacher=teacher)  # Assuming teacher is logged in
         
