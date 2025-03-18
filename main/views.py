@@ -594,7 +594,7 @@ def printTeacherBookings(request):
         bookings = Booking.objects.filter(teacher=teacher)  # Assuming teacher is logged in
         
         student = Student.objects.get(name='UCAS')
-        ucas_bookings = request.user.teacher.booking_set.filter(student=student)
+        ucas_bookings = teacher.booking_set.filter(student=student)
         ucas_sorted = sortBookings(ucas_bookings)
 
         final_ucas = []
