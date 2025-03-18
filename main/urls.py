@@ -23,4 +23,5 @@ urlpatterns = [
     path('emailAllStudents/', views.emailAllStudents, name="emailAllStudents"),
     path('emailAllTeachers/', views.emailAllTeachers, name="emailAllTeachers"),
     path('printTeacherBookings/', views.printTeacherBookings, name="printTeacherBookings"),
+    path('printStudentBookings/', views.printStudentBookings, name="printStudentBookings"),
 ]

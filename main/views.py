@@ -634,3 +634,81 @@ def printTeacherBookings(request):
     # Send PDF response
     buffer.seek(0)
     return HttpResponse(buffer, content_type="application/pdf")
+
+
+
+
+@login_required(login_url='login')
+@allowed_users(allowed_roles=['admin'])
+def printStudentBookings(request):
+    # Create a buffer to hold the PDF
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+
+    students = Student.objects.filter(year_group="LVI")
+
+    for student in students:
+
+        name = student.name
+
+        # Title
+        p.setFont("Helvetica-Bold", 16)
+        p.drawString(200, height - 50, f"{name}'s Bookings Summary")
+
+        # Table Headers
+        p.setFont("Helvetica-Bold", 12)
+        headers = ["Start Time", "Teacher", "Subject", "Date","Building", "Room", "Status"]
+        x_offset = 50
+        y_offset = height - 100
+
+        for i, header in enumerate(headers):
+            p.drawString(x_offset + i * 100, y_offset, header)
+
+        # Table Data
+        p.setFont("Helvetica", 10)
+        y_offset -= 20
+
+        bookings = Booking.objects.filter(student=student)  # Assuming student is logged in
+        bookings = sortBookings(bookings)
+        for booking in bookings:
+            subjects = ", ".join(
+                [subject.name for subject in booking.student.subjects.all() if subject in booking.teacher.subjects.all()]
+            )
+            
+            data = [
+                booking.timeslot.start_time.strftime("%H:%M"),
+                booking.teacher.name,
+                subjects,
+                booking.date.date.strftime("%Y-%m-%d"),
+                booking.teacher.building.name,
+                booking.teacher.room.name,
+                booking.status
+            ]
+
+            for i, text in enumerate(data):
+                p.drawString(x_offset + i * 100, y_offset, text)
+
+            y_offset -= 20
+
+
+        # Move to second page
+        p.showPage()
+
+        # Path to the image in static folder
+
+        image_path = os.path.join(os.path.dirname(__file__), "..", "static", "images", "LVImap.png")
+
+        # Add image to second page
+        if os.path.exists(image_path):
+            p.drawImage(image_path, 100, height / 2, width=500, height=400)  # Adjust position and size
+        
+        p.showPage()
+
+    # Save PDF to buffer
+    p.showPage()
+    p.save()
+
+    # Send PDF response
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type="application/pdf")
