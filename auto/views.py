@@ -530,7 +530,7 @@ def automatic(request):
 
 
             elif teachersLeft > len(userTimeslots):
-                messages.info(request, 'Time range to small to book for all teachers')
+                messages.info(request, 'Time range too small to book for all teachers')
 
             
 
